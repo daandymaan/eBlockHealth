@@ -23,7 +23,7 @@ export PATH=$PATH:$FABRIC_CFG_PATH
 cd /home/dan/Docs/fabric-samples/test-network
 
 #Remove docker 
-#docker kill logspout || true 
+docker kill logspout || true 
 
 #Stop network if already running
 ./network.sh down 
