@@ -38,6 +38,6 @@ export PATH=$PATH:$FABRIC_CFG_PATH
 env | sort | comm -1 -3 /tmp/env.orig - | sed -E 's/(.*)=(.*)/export \1="\2"/'
 rm /tmp/env.orig
 
-# sudo update-alternatives --config java
+sudo update-alternatives --config java
 
 cd ${DIR}
