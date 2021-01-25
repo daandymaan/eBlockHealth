@@ -31,11 +31,9 @@ cp "/home/dan/Docs/fabric-samples/test-network/organizations/peerOrganizations/o
 cp "/home/dan/Docs/fabric-samples/test-network/organizations/peerOrganizations/org2.example.com/connection-org2.yaml" "${DIR}/Orgs/Org2/gateway/"
 
 cd /home/dan/Docs/BlockchainPrescribing
-if [ $1 == "build" ]
-then 
-    source config-env.sh 
-    #Package source code for chaincode cp.tar.gz package name ./Smart-Contract/contract path
-    peer lifecycle chaincode package cp.tar.gz --lang java --path ./Smart-Contract/contract --label cp_0
-    #Deploy chaincode to blockchain
-    peer lifecycle chaincode install cp.tar.gz
-fi 
+
+#Next commands
+#source config-env.sh
+#peer lifecycle chaincode package cp.tar.gz --lang java --path ./Smart-Contract/contract --label cp_0
+#peer lifecycle chaincode install cp.tar.gz
+#peer lifecycle chaincode queryinstalled
