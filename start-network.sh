@@ -33,7 +33,12 @@ cp "/home/dan/Docs/fabric-samples/test-network/organizations/peerOrganizations/o
 cd /home/dan/Docs/BlockchainPrescribing
 
 #Next commands
-#source config-env.sh
+#ADMIN 
+#source config-env.sh (1 or 2)
 #peer lifecycle chaincode package cp.tar.gz --lang java --path ./Smart-Contract/contract --label cp_0
 #peer lifecycle chaincode install cp.tar.gz
 #peer lifecycle chaincode queryinstalled
+#export PACKAGE_ID=
+#peer lifecycle chaincode approveformyorg --orderer localhost:7050 --ordererTLSHostnameOverride orderer.example.com --channelID mychannel --name prescriptioncontract -v 0 --package-id $PACKAGE_ID --sequence 1 --tls --cafile $ORDERER_CA
+#This step on ORG2
+#peer lifecycle chaincode commit -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com --peerAddresses localhost:7051 --tlsRootCertFiles ${PEER0_ORG1_CA} --peerAddresses localhost:9051 --tlsRootCertFiles ${PEER0_ORG2_CA} --channelID mychannel --name prescriptioncontract -v 0 --sequence 1 --tls --cafile $ORDERER_CA --waitForEvent
