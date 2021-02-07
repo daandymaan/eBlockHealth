@@ -1,14 +1,18 @@
 package contract.ledgerapi.impl;
 
-
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
+import contract.Prescription;
 import contract.ledgerapi.State;
 import contract.ledgerapi.StateDeserializer;
 import contract.ledgerapi.StateList;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 import org.hyperledger.fabric.shim.ledger.CompositeKey;
+import org.hyperledger.fabric.shim.ledger.KeyValue;
+import org.hyperledger.fabric.shim.ledger.QueryResultsIterator;
 
 /*
 SPDX-License-Identifier: Apache-2.0
@@ -96,6 +100,20 @@ public class StateListImpl implements StateList {
         this.ctx.getStub().putState(ledgerKey.toString(), data);
 
         return this;
+    }
+
+
+    public List<State> getAllStates(){
+        List<State> queryResults = new ArrayList<State>();
+        QueryResultsIterator<KeyValue> results = this.ctx.getStub().getStateByRange("", "");
+
+        for(KeyValue result: results){
+            System.out.println("GET ALL STATES RESULT:" + result.toString());
+            State state = this.deserializer.deserialize(result.getValue());
+            System.out.println("Result converted to state"+ state);
+            queryResults.add(state);
+        }
+        return queryResults;
     }
 
 }

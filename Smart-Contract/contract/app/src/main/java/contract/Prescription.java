@@ -60,6 +60,9 @@ public class Prescription extends State{
 
     //Values to be stored on the blockchain
     @Property()
+    private String PID;
+
+    @Property()
     private String date;
     
     @Property()
@@ -100,15 +103,13 @@ public class Prescription extends State{
     }
 
     //Getters and setters for values
-    public String getOwner() {
-        return owner;
+    public String getPID() {
+        return PID;
     }
 
-    public Prescription setOwner(String owner) {
-        this.owner = owner;
-        return this;
+    public void setPID(String pID) {
+        PID = pID;
     }
-
     public String getDate() {
         return date;
     }
@@ -123,6 +124,15 @@ public class Prescription extends State{
 
     public void setIssuer(String issuer) {
         this.issuer = issuer;
+    }
+
+    public String getOwner() {
+        return owner;
+    }
+
+    public Prescription setOwner(String owner) {
+        this.owner = owner;
+        return this;
     }
 
     public String getProduct() {
@@ -197,13 +207,6 @@ public class Prescription extends State{
         this.comment = comment;
     }
 
-    @Override
-    public String toString() {
-        return "Prescription [comment=" + comment + ", date=" + date + ", doseQuantity=" + doseQuantity
-                + ", doseStrength=" + doseStrength + ", doseType=" + doseType + ", instruction=" + instruction
-                + ", issuer=" + issuer + ", owner=" + owner + ", product=" + product + ", productID=" + productID
-                + ", productPackage=" + productPackage + ", quantity=" + quantity + ", state=" + state + "]";
-    }
 
     /**
      * Deserialize a state data to prescription
@@ -216,6 +219,7 @@ public class Prescription extends State{
         JSONObject json = new JSONObject(new String(data, UTF_8));
 
         String state = json.getString("state");        
+        String PID = json.getString("PID");
         String date = json.getString("date");
         String issuer = json.getString("issuer");
         String owner = json.getString("owner");
@@ -229,7 +233,7 @@ public class Prescription extends State{
         String instruction = json.getString("instruction");
         String comment = json.getString("comment");
         
-        return new Prescription(date, issuer,  owner,  product,  productID,  productPackage,  quantity,  doseStrength,  doseType,  doseQuantity,  instruction,  comment, state);
+        return new Prescription(PID, date, issuer,  owner,  product,  productID,  productPackage,  quantity,  doseStrength,  doseType,  doseQuantity,  instruction,  comment, state);
     }
 
     public static byte[] serialize(Prescription prescription) {
@@ -237,10 +241,11 @@ public class Prescription extends State{
     }
 
     //Without state
-    public Prescription(String date, String issuer, String owner, String product, String productID,
+    public Prescription(String PID, String date, String issuer, String owner, String product, String productID,
             String productPackage, String quantity, String doseStrength, String doseType, String doseQuantity,
             String instruction, String comment) {
 
+        this.PID = PID;
         this.date = date;
         this.issuer = issuer;
         this.owner = owner;
@@ -256,9 +261,11 @@ public class Prescription extends State{
     }
 
     //With state
-    public Prescription(String date, String issuer, String owner, String product, String productID,
+    public Prescription(String PID, String date, String issuer, String owner, String product, String productID,
             String productPackage, String quantity, String doseStrength, String doseType, String doseQuantity,
             String instruction, String comment, String state) {
+
+        this.PID = PID;
         this.state = state;
         this.date = date;
         this.issuer = issuer;
@@ -272,5 +279,13 @@ public class Prescription extends State{
         this.doseQuantity = doseQuantity;
         this.instruction = instruction;
         this.comment = comment;
+    }
+
+    @Override
+    public String toString() {
+        return "Prescription [PID=" + PID + ", comment=" + comment + ", date=" + date + ", doseQuantity=" + doseQuantity
+                + ", doseStrength=" + doseStrength + ", doseType=" + doseType + ", instruction=" + instruction
+                + ", issuer=" + issuer + ", owner=" + owner + ", product=" + product + ", productID=" + productID
+                + ", productPackage=" + productPackage + ", quantity=" + quantity + ", state=" + state + "]";
     }
 }

@@ -1,5 +1,9 @@
 package contract;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.contract.ContractInterface;
 import org.hyperledger.fabric.contract.annotation.Contact;
@@ -9,6 +13,8 @@ import org.hyperledger.fabric.contract.annotation.Info;
 import org.hyperledger.fabric.contract.annotation.License;
 import org.hyperledger.fabric.contract.annotation.Transaction;
 import org.hyperledger.fabric.shim.ChaincodeStub;
+import org.hyperledger.fabric.shim.ledger.KeyValue;
+import org.hyperledger.fabric.shim.ledger.QueryResultsIterator;
 
 import contract.ledgerapi.State;
 
@@ -22,6 +28,17 @@ public class PrescriptionContract implements ContractInterface{
     }
 
     public PrescriptionContract(){
+
+    }
+
+    @Transaction(intent = Transaction.TYPE.EVALUATE)
+    public boolean PrescriptionExists(PrescriptionContext ctx, String PID){
+        Prescription p = ctx.prescriptionList.getPrescription(PID);
+        if(p == null){
+            System.out.println("Prescription does not exist");
+            return false;
+        } 
+        return true;
 
     }
 
@@ -45,11 +62,12 @@ public class PrescriptionContract implements ContractInterface{
      * @param {String} Instruction in how to consume the medication
      * @param {String} Comments in addition to the instructions
      */
-    @Transaction
+    @Transaction(intent = Transaction.TYPE.SUBMIT)
     public Prescription issue(PrescriptionContext ctx, String date, String issuer, String product, String productID, String productPackage, String quantity, String doseStrength, String doseType, String doseQuantity, String instruction, String comment){
         
+        String PID = generatePID(date, issuer, product, productID);
         //Create instance of prescription
-        Prescription prescription = new Prescription(date, issuer, "", product, productID, productPackage, quantity, doseStrength, doseType, doseQuantity, instruction, comment, "");
+        Prescription prescription = new Prescription(PID, date, issuer, "", product, productID, productPackage, quantity, doseStrength, doseType, doseQuantity, instruction, comment, "");
 
         //Set status or state of the prescription to issued
         prescription.setIssued();
@@ -69,21 +87,15 @@ public class PrescriptionContract implements ContractInterface{
      * Send a prescription
      * String date, String issuer, String owner, String product, String productID, String productPackage, String quantity, String doseStrength, String doseType, String doseQuantity, String instruction, String comment
      * @param {Context} ctx the transaction context
+     * @param {String} PID of the prescription
      * @param {String} date of when the prescription was issued
      * @param {String} issuer of the prescription (e.g. GP)
      * @param {String} owner of the prescription (e.g. patient)
-     * @param {String} Medical product title  
-     * @param {String} Product ID which relates to the medicine 
-     * @param {String} Quantity of the product needed to complete prescription
-     * @param {String} Dose strength (e.g. 200mg)
-     * @param {String} Dose quantity how many insances of the medical product 
-     * @param {String} Instruction in how to consume the medication
-     * @param {String} Comments in addition to the instructions
      */
     //KEY GENERATION SHOULD BE A BIT MORE COMPLEX
-    @Transaction
-    public Prescription send(PrescriptionContext ctx, String date, String currentOwner, String recipient, String product, String productID, String productPackage, String quantity, String doseStrength, String doseType, String doseQuantity, String instruction, String comment){
-        String key = State.makeKey(new String[] {date, productID});
+    @Transaction(intent = Transaction.TYPE.SUBMIT)
+    public Prescription send(PrescriptionContext ctx, String PID,  String date, String currentOwner, String recipient){
+        String key = State.makeKey(new String[] { PID });
         Prescription prescription = ctx.prescriptionList.getPrescription(key);
 
         //Validate current owner
@@ -112,20 +124,13 @@ public class PrescriptionContract implements ContractInterface{
      * Redeem a prescription
      * String date, String issuer, String owner, String product, String productID, String productPackage, String quantity, String doseStrength, String doseType, String doseQuantity, String instruction, String comment
      * @param {Context} ctx the transaction context
+     * @param {String} PID of prescription
      * @param {String} date of when the prescription was issued
-     * @param {String} issuer of the prescription (e.g. GP)
      * @param {String} owner of the prescription (e.g. patient)
-     * @param {String} Medical product title  
-     * @param {String} Product ID which relates to the medicine 
-     * @param {String} Quantity of the product needed to complete prescription
-     * @param {String} Dose strength (e.g. 200mg)
-     * @param {String} Dose quantity how many insances of the medical product 
-     * @param {String} Instruction in how to consume the medication
-     * @param {String} Comments in addition to the instructions
      */
-    @Transaction
-    public Prescription redeem(PrescriptionContext ctx, String date, String owner, String productID){
-        String key = Prescription.makeKey(new String[] { date, productID });
+    @Transaction(intent = Transaction.TYPE.SUBMIT)
+    public Prescription redeem(PrescriptionContext ctx, String PID,  String date, String owner){
+        String key = Prescription.makeKey(new String[] { PID });
 
         Prescription prescription = ctx.prescriptionList.getPrescription(key);
 
@@ -144,5 +149,25 @@ public class PrescriptionContract implements ContractInterface{
 
         ctx.prescriptionList.updatePrescription(prescription);
         return prescription;
+    }
+
+    public String generatePID(String date, String issuer, String product, String productID){
+       return Integer.toString(Objects.hash(date, issuer, productID));
+    }
+
+    @Transaction(intent = Transaction.TYPE.EVALUATE)
+    public List<Prescription> getAllPrescriptions(PrescriptionContext ctx){
+        ChaincodeStub stub = ctx.getStub();
+        List<Prescription> prescriptionList = new ArrayList<Prescription>();
+
+        QueryResultsIterator<KeyValue> results = stub.getStateByRange("", "");
+
+        for(KeyValue result : results){
+            Prescription prescription = Prescription.deserialize(result.getValue());
+            prescriptionList.add(prescription);
+            System.out.println(prescription.toString());
+        }
+        //This might have to be to string
+        return prescriptionList;
     }
 }
