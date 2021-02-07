@@ -5,10 +5,13 @@ package application;
 
 public class App {
     public String getGreeting() {
-        return "Hello World!";
+        return "Starting Java app";
     }
 
     public static void main(String[] args) {
         System.out.println(new App().getGreeting());
+        RegisterUser register = new RegisterUser();
+        register.enrollAdmin();
+        register.enrollUser("Rachel");
     }
 }
