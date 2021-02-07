@@ -1,0 +1,2 @@
+Installed chaincodes on peer:
+Package ID: cp_0:1d26038f33eee09cdd38881b24d096dcba6aa69363da9dc8461587c89199e232, Label: cp_0
