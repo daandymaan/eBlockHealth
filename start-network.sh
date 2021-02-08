@@ -32,5 +32,5 @@ cp "/home/dan/Docs/fabric-samples/test-network/organizations/peerOrganizations/o
 
 cd /home/dan/Docs/BlockchainPrescribing
 
-infoln "Run this script to install chaincode"
-infoln "./deployCC.sh"
+# Run this script to install chaincode
+# ./deployCC.sh
