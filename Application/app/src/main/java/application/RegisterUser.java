@@ -1,10 +1,16 @@
 package application;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.security.PrivateKey;
+import java.text.ParseException;
 import java.util.Properties;
 import java.util.Set;
+
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import org.hyperledger.fabric.gateway.Identities;
 import org.hyperledger.fabric.gateway.Identity;
@@ -18,6 +24,8 @@ import org.hyperledger.fabric.sdk.security.CryptoSuiteFactory;
 import org.hyperledger.fabric_ca.sdk.EnrollmentRequest;
 import org.hyperledger.fabric_ca.sdk.HFCAClient;
 import org.hyperledger.fabric_ca.sdk.RegistrationRequest;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 public class RegisterUser {
 
@@ -25,7 +33,7 @@ public class RegisterUser {
     private static String url = "https://localhost:7054";
     // "/home/dan/Docs/BlockchainPrescribing/Wallets"
 
-    public HFCAClient createCAClient() throws Exception {
+    public static HFCAClient createCAClient() throws Exception {
         Properties props = new Properties();
         props.put("pemFile", pemLocation);
         props.put("allowAllHostName", "true");
@@ -35,13 +43,13 @@ public class RegisterUser {
         return caClient;
     }
 
-    public Wallet getWallet() throws IOException {
+    public static Wallet getWallet() throws IOException {
         // Creating wallet where wallets are saved to the directory
         Wallet wallet = Wallets.newFileSystemWallet(Paths.get("../../wallets"));
         return wallet;
     }
 
-    public void enrollAdmin() {
+    public static void enrollAdmin() {
         try {
             HFCAClient ca = createCAClient();
             Wallet wallet = getWallet();
@@ -65,7 +73,7 @@ public class RegisterUser {
         }
     }
 
-    public void enrollUser(String user) {
+    public static void enrollUser(String user) {
         try {
             HFCAClient ca = createCAClient();
             Wallet wallet = getWallet();
@@ -90,15 +98,17 @@ public class RegisterUser {
             Identity newUser = Identities.newX509Identity("Org1MSP", enrollment);
             wallet.put(user, newUser);
             System.out.println("Succesfully enrolled " + user + " and imported into wallet");
+            System.out.println("Reading credentials");
+            readJSON();
+
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
-        
+
     }
 
-    public User getAdminUser(X509Identity adminIdentity){
+    public static User getAdminUser(X509Identity adminIdentity) {
         User adminUser = new User(){
 
             @Override
@@ -144,6 +154,36 @@ public class RegisterUser {
             
         };
         return adminUser;
+    }
+
+
+    public static void readJSON(){
+
+        
+        try (FileReader reader = new FileReader("../../wallets/admin.id"))
+        {
+            //Read JSON file
+            Object obj = JsonParser.parseReader(reader);
+ 
+            JsonObject usr = (JsonObject) obj;
+            // System.out.println(usr.toString());
+            parseUserObject(usr);
+ 
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+
+    public static void parseUserObject(JsonObject usr){
+        
+        // String cheese = usr.get("credentials").get;
+        JsonObject credentials = usr.getAsJsonObject("credentials");
+        System.out.println(credentials.toString());
     }
 
 }
