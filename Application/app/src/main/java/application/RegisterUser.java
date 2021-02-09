@@ -73,12 +73,12 @@ public class RegisterUser {
         }
     }
 
-    public static void enrollUser(String user) {
+    public static void enrollUser(JsonObject user) {
         try {
             HFCAClient ca = createCAClient();
             Wallet wallet = getWallet();
 
-            if(wallet.get(user) != null){
+            if(wallet.get(user.get("PPSN").getAsString()) != null){
                 System.out.println("User already exists");
                 return ;
             }
@@ -90,17 +90,14 @@ public class RegisterUser {
             X509Identity adminIdentity = (X509Identity)wallet.get("admin");
             User admin = getAdminUser(adminIdentity);
 
-            RegistrationRequest registrationRequest = new RegistrationRequest(user);
+            RegistrationRequest registrationRequest = new RegistrationRequest(user.get("PPSN").getAsString());
             registrationRequest.setAffiliation("org1.department1");
-            registrationRequest.setEnrollmentID(user);
+            registrationRequest.setEnrollmentID(user.get("PPSN").getAsString());
             String enrollmentSecret = ca.register(registrationRequest, admin);
-            Enrollment enrollment = ca.enroll(user, enrollmentSecret);
+            Enrollment enrollment = ca.enroll(user.get("PPSN").getAsString(), enrollmentSecret);
             Identity newUser = Identities.newX509Identity("Org1MSP", enrollment);
-            wallet.put(user, newUser);
+            wallet.put(user.get("PPSN").getAsString(), newUser);
             System.out.println("Succesfully enrolled " + user + " and imported into wallet");
-            System.out.println("Reading credentials");
-            readJSON();
-
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -154,36 +151,6 @@ public class RegisterUser {
             
         };
         return adminUser;
-    }
-
-
-    public static void readJSON(){
-
-        
-        try (FileReader reader = new FileReader("../../wallets/admin.id"))
-        {
-            //Read JSON file
-            Object obj = JsonParser.parseReader(reader);
- 
-            JsonObject usr = (JsonObject) obj;
-            // System.out.println(usr.toString());
-            parseUserObject(usr);
- 
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
-    }
-
-
-    public static void parseUserObject(JsonObject usr){
-        
-        // String cheese = usr.get("credentials").get;
-        JsonObject credentials = usr.getAsJsonObject("credentials");
-        System.out.println(credentials.toString());
     }
 
 }

@@ -3,6 +3,10 @@
  */
 package application;
 
+import com.google.gson.JsonObject;
+
+import org.hyperledger.fabric.gateway.Gateway;
+
 public class App {
     public String getGreeting() {
         return "Starting Java app";
@@ -10,7 +14,18 @@ public class App {
 
     public static void main(String[] args) {
         System.out.println(new App().getGreeting());
-        RegisterUser.enrollAdmin();
-        RegisterUser.enrollUser("cheese11");
+        JsonObject json = new JsonObject();
+        json.addProperty("PPSN", "3324784V");
+        json.addProperty("pattern", "01234567");
+        json.addProperty("passcode", "x2VR0Mhe");
+
+        // RegisterUser.enrollAdmin();
+        // RegisterUser.enrollUser(json);
+        Authentication authentication = new Authentication();
+        try {
+            Gateway gateway = authentication.connect(json);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
