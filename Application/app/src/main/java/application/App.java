@@ -5,7 +5,6 @@ package application;
 
 import com.google.gson.JsonObject;
 
-import org.hyperledger.fabric.gateway.Gateway;
 
 public class App {
     public String getGreeting() {
@@ -17,13 +16,25 @@ public class App {
         JsonObject json = new JsonObject();
         json.addProperty("PPSN", "3324784V");
         json.addProperty("pattern", "01234567");
-        json.addProperty("passcode", "x2VR0Mhe");
+        json.addProperty("passcode", "zuSNZF+9");
+        json.addProperty("cert", "undefined");
 
         // RegisterUser.enrollAdmin();
         // RegisterUser.enrollUser(json);
-        Authentication authentication = new Authentication();
         try {
-            Gateway gateway = authentication.connect(json);
+            Authentication authentication = new Authentication();
+            json = authentication.authenticateUser(json);
+            if(json.get("cert").getAsString().equals("undefined")){
+                System.out.println("Authentication failed please enter correct details");
+            } else {
+                System.out.println("Authentication succeeded have a nice day");
+                System.out.println(json.get("cert").getAsString());
+            }
+            // Contract contract = Connection.connect(json);
+            
+            byte[] result;
+            // contract.submitTransaction("issue", "11/02/2021", json.get("PPSN"))
+
         } catch (Exception e) {
             e.printStackTrace();
         }
