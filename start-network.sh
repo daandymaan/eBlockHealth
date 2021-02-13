@@ -34,4 +34,4 @@ cp "/home/dan/Docs/fabric-samples/test-network/organizations/peerOrganizations/o
 cd /home/dan/Docs/BlockchainPrescribing
 
 # Run this script to install chaincode
-# ./deployCC.sh
+./deployCC.sh

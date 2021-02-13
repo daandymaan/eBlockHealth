@@ -31,6 +31,6 @@ docker kill logspout || true
 #Delete wallets folder 
 if [ -d "/home/dan/Docs/BlockchainPrescribing/wallets" ]; then 
     rm -r /home/dan/Docs/BlockchainPrescribing/wallets
-    docker rm $(docker ps -a -q)
+    #docker rm $(docker ps -a -q)
 fi 
 
