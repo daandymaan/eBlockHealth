@@ -18,7 +18,7 @@ import org.hyperledger.fabric.shim.ledger.QueryResultsIterator;
 
 import contract.ledgerapi.State;
 
-@Contract(name = "org.blockprescription.prescription", info = @Info(title = "Prescription contract", description = "Contract", version = "0.0.1", license = @License(name = "SPDX-License-Identifier: Apache-2.0", url = ""),contact = @Contact (email = "java-contract@example.com", name = "java-contract", url = "http://java-contract.me") ))
+@Contract(name = "prescriptioncontract", info = @Info(title = "Prescription contract", description = "Contract", version = "0.0.1", license = @License(name = "SPDX-License-Identifier: Apache-2.0", url = ""),contact = @Contact (email = "java-contract@example.com", name = "java-contract", url = "http://java-contract.me") ))
 @Default
 public class PrescriptionContract implements ContractInterface{
     
@@ -157,6 +157,7 @@ public class PrescriptionContract implements ContractInterface{
 
     @Transaction(intent = Transaction.TYPE.EVALUATE)
     public List<Prescription> getAllPrescriptions(PrescriptionContext ctx){
+        // System.out.println("GET ALL PRESCRIPTIONS");
         ChaincodeStub stub = ctx.getStub();
         List<Prescription> prescriptionList = new ArrayList<Prescription>();
 

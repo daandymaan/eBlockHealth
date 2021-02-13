@@ -12,6 +12,11 @@ import org.hyperledger.fabric.gateway.Wallet;
 import org.hyperledger.fabric.gateway.Wallets;
 
 public class Connection {
+
+    //Needed to run application locally
+    static {
+		System.setProperty("org.hyperledger.fabric.sdk.service_discovery.as_localhost", "true");
+	}
     
     public static Contract connect(JsonObject user) throws Exception{
         Path walletpath = Paths.get("../../wallets");
@@ -20,8 +25,11 @@ public class Connection {
         Gateway.Builder builder = Gateway.createBuilder();
         builder.identity(wallet, user.get("PPSN").getAsString()).networkConfig(networkConfigPath).discovery(true);
         Gateway gateway = builder.connect();
+        System.out.println("Gateway created");
         Network network = gateway.getNetwork("mychannel");
-        Contract contract = network.getContract("org.blockprescription.prescription");
+        System.out.println("Network created");
+        Contract contract = network.getContract("pc");
+        System.out.println("Contract found");
         return contract;
     }
 }

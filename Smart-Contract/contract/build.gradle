@@ -22,6 +22,10 @@ repositories {
     }
 }
 
+application {
+    mainClass = 'org.hyperledger.fabric.contract.ContractRouter'
+}
+
 dependencies {
     // Use JUnit test framework.
     testImplementation 'junit:junit:4.13'

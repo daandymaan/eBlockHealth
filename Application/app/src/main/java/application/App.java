@@ -5,8 +5,16 @@ package application;
 
 import com.google.gson.JsonObject;
 
+import org.hyperledger.fabric.gateway.Contract;
+
 
 public class App {
+
+    //Needed to run application locally
+    static {
+		System.setProperty("org.hyperledger.fabric.sdk.service_discovery.as_localhost", "true");
+	}
+
     public String getGreeting() {
         return "Starting Java app";
     }
@@ -16,24 +24,38 @@ public class App {
         JsonObject json = new JsonObject();
         json.addProperty("PPSN", "3324784V");
         json.addProperty("pattern", "01234567");
-        json.addProperty("passcode", "zuSNZF+9");
+        json.addProperty("passcode", "7q0z1em9");
         json.addProperty("cert", "undefined");
 
-        // RegisterUser.enrollAdmin();
+        JsonObject data = new JsonObject();
+        data.addProperty("date", "11/02/2021");
+        data.addProperty("product", "LEXAPRO");
+        data.addProperty("productID", "G131");
+        data.addProperty("productPackage", "");
+        data.addProperty("quantity", "28");
+        data.addProperty("doseStrength", "10MG");
+        data.addProperty("doseType", "TABS");
+        data.addProperty("doseQuantity", "1 per day");
+        data.addProperty("instruction", "TAKE ONE DAILY AS DIRECTED");
+        data.addProperty("comment", "");
+
+        JsonObject admin = new JsonObject();
+        admin.addProperty("PPSN", "admin");
+
+        RegisterUser.enrollAdmin();
         // RegisterUser.enrollUser(json);
         try {
             Authentication authentication = new Authentication();
-            json = authentication.authenticateUser(json);
-            if(json.get("cert").getAsString().equals("undefined")){
-                System.out.println("Authentication failed please enter correct details");
-            } else {
+            // json = authentication.authenticateUser(json);
+            // if(json.get("cert").getAsString().equals("undefined")){
+            //     System.out.println("Authentication failed please enter correct details");
+            // } else {
                 System.out.println("Authentication succeeded have a nice day");
                 System.out.println(json.get("cert").getAsString());
-            }
-            // Contract contract = Connection.connect(json);
-            
-            byte[] result;
-            // contract.submitTransaction("issue", "11/02/2021", json.get("PPSN"))
+                Contract contract = Connection.connect(admin);
+                // PrescriptionRequests.createPrescription(contract, data, json);
+                PrescriptionRequests.getAllPrescriptions(contract);
+            // }
 
         } catch (Exception e) {
             e.printStackTrace();
