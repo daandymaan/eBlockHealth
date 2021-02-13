@@ -33,7 +33,7 @@ public class Prescription {
      private String instruction;
      @Property()
      private String comment;
-     
+
      //Getters and setters for values
      public String getPID() {
          return PID;
@@ -147,11 +147,10 @@ public class Prescription {
       */
      //String date, String issuer, String owner, String product, String productID, String productPackage, String quantity, String doseStrength, String doseType, String doseQuantity, String instruction, String comment
      //Method to retreive a JSON object and convert the data into Strings that the class can use
-     public static Prescription deserialize(byte[] data){
-         JSONObject json = new JSONObject(new String(data, UTF_8));
- 
-         String state = json.getString("state");        
-         String PID = json.getString("PID");
+     public static Prescription deserialize(String string){
+         JSONObject json = new JSONObject(string);
+   
+         String PID = json.getString("pID");
          String date = json.getString("date");
          String issuer = json.getString("issuer");
          String owner = json.getString("owner");
@@ -165,7 +164,7 @@ public class Prescription {
          String instruction = json.getString("instruction");
          String comment = json.getString("comment");
          
-         return new Prescription(PID, date, issuer,  owner,  product,  productID,  productPackage,  quantity,  doseStrength,  doseType,  doseQuantity,  instruction,  comment, state);
+         return new Prescription(PID, date, issuer,  owner,  product,  productID,  productPackage,  quantity,  doseStrength,  doseType,  doseQuantity,  instruction,  comment);
      }
  
      public static byte[] serialize(Prescription prescription) {
@@ -177,7 +176,7 @@ public class Prescription {
      public Prescription(String PID, String date, String issuer, String owner, String product, String productID,
              String productPackage, String quantity, String doseStrength, String doseType, String doseQuantity,
              String instruction, String comment) {
- 
+
          this.PID = PID;
          this.date = date;
          this.issuer = issuer;
@@ -193,27 +192,11 @@ public class Prescription {
          this.comment = comment;
      }
  
-     //With state
-     public Prescription(String PID, String date, String issuer, String owner, String product, String productID,
-             String productPackage, String quantity, String doseStrength, String doseType, String doseQuantity,
-             String instruction, String comment, String state) {
- 
-         this.PID = PID;
-         this.date = date;
-         this.issuer = issuer;
-         this.owner = owner;
-         this.product = product;
-         this.productID = productID;
-         this.productPackage = productPackage;
-         this.quantity = quantity;
-         this.doseStrength = doseStrength;
-         this.doseType = doseType;
-         this.doseQuantity = doseQuantity;
-         this.instruction = instruction;
-         this.comment = comment;
-     }
- 
-     @Override
+     public Prescription() {
+
+	}
+
+	@Override
      public String toString() {
          return "Prescription [PID=" + PID + ", comment=" + comment + ", date=" + date + ", doseQuantity=" + doseQuantity
                  + ", doseStrength=" + doseStrength + ", doseType=" + doseType + ", instruction=" + instruction

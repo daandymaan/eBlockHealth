@@ -15,7 +15,7 @@ public class PrescriptionRequests {
     public static void createPrescription(Contract contract, JsonObject data, JsonObject user) {
         System.out.println("Creating prescription");
         try {
-            contract.submitTransaction("issue", 
+            byte[] result = contract.submitTransaction("issue", 
             data.get("date").getAsString(), 
             user.get("cert").getAsString(),
             data.get("product").getAsString(), 
@@ -27,6 +27,7 @@ public class PrescriptionRequests {
             data.get("doseQuantity").getAsString(),
             data.get("instruction").getAsString(),
             data.get("comment").getAsString());
+            System.out.println(new String(result));
         } catch (ContractException | TimeoutException | InterruptedException e) {
             e.printStackTrace();
         }
@@ -36,7 +37,7 @@ public class PrescriptionRequests {
         System.out.println("Get all prescriptions");
         byte[] result;
         try {
-            result = contract.evaluateTransaction("GetAllAssets");
+            result = contract.evaluateTransaction("getAllPrescriptions");
             System.out.println(new String(result));
         } catch (ContractException e) {
             e.printStackTrace();

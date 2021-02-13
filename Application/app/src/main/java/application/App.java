@@ -28,15 +28,15 @@ public class App {
         json.addProperty("cert", "undefined");
 
         JsonObject data = new JsonObject();
-        data.addProperty("date", "11/02/2021");
+        data.addProperty("date", "11022021");
         data.addProperty("product", "LEXAPRO");
         data.addProperty("productID", "G131");
         data.addProperty("productPackage", "");
         data.addProperty("quantity", "28");
         data.addProperty("doseStrength", "10MG");
         data.addProperty("doseType", "TABS");
-        data.addProperty("doseQuantity", "1 per day");
-        data.addProperty("instruction", "TAKE ONE DAILY AS DIRECTED");
+        data.addProperty("doseQuantity", "1perday");
+        data.addProperty("instruction", "TAKEONEDAILYASDIRECTED");
         data.addProperty("comment", "");
 
         JsonObject admin = new JsonObject();
@@ -53,7 +53,7 @@ public class App {
                 System.out.println("Authentication succeeded have a nice day");
                 System.out.println(json.get("cert").getAsString());
                 Contract contract = Connection.connect(admin);
-                // PrescriptionRequests.createPrescription(contract, data, json);
+                PrescriptionRequests.createPrescription(contract, data, json);
                 PrescriptionRequests.getAllPrescriptions(contract);
             // }
 
