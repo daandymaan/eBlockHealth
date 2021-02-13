@@ -21,8 +21,8 @@ function println() {
 
 
 CHANNEL_NAME="mychannel"
-CC_NAME="pc"
-CC_SRC_PATH=./Smart-Contract/chaincode-java/
+CC_NAME="pc"                #chaincode-java
+CC_SRC_PATH=./Smart-Contract/java-contract/
 CC_SRC_LANGUAGE=java
 CC_RUNTIME_LANGUAGE=java
 CC_VERSION="1.0"

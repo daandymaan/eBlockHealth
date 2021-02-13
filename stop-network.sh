@@ -29,7 +29,8 @@ docker kill logspout || true
 ./network.sh down 
 
 #Delete wallets folder 
-rm -r /home/dan/Docs/BlockchainPrescribing/wallets
+if [ -d "/home/dan/Docs/BlockchainPrescribing/wallets" ]; then 
+    rm -r /home/dan/Docs/BlockchainPrescribing/wallets
+    docker rm $(docker ps -a -q)
+fi 
 
-# remove any stopped containers
-docker rm $(docker ps -a -q)
