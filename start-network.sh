@@ -19,11 +19,12 @@ export PATH=/home/dan/Docs/fabric-samples/bin:$PATH
 export FABRIC_CFG_PATH=/home/dan/Docs/fabric-samples/config/
 export PATH=$PATH:$FABRIC_CFG_PATH 
 
+#Stop network
+./stop-network.sh
+
 #Go to network directory
 cd /home/dan/Docs/fabric-samples/test-network
 
-#Stop network if already running
-./network.sh down 
 #Creates a network with ca and each have a couchdb
 ./network.sh up createChannel -ca -s couchdb 
 
