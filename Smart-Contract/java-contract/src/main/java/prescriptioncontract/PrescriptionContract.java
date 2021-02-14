@@ -15,6 +15,7 @@ import org.hyperledger.fabric.contract.annotation.Info;
 import org.hyperledger.fabric.contract.annotation.License;
 import org.hyperledger.fabric.contract.annotation.Transaction;
 import org.hyperledger.fabric.shim.ChaincodeStub;
+import org.hyperledger.fabric.shim.ledger.KeyModification;
 import org.hyperledger.fabric.shim.ledger.KeyValue;
 import org.hyperledger.fabric.shim.ledger.QueryResultsIterator;
 
@@ -35,42 +36,85 @@ import org.hyperledger.fabric.shim.ledger.QueryResultsIterator;
 public final class PrescriptionContract implements ContractInterface {
     private final Genson genson = new Genson();
 
+    /**
+     * Generate an ID for the prescription
+     * @param date The datetime the prescription was created
+     * @param issuer The current issuer of the prescription
+     * @param product The product title
+     * @param productID The ID related to the product 
+     * @return The ID for the prescription
+     */
     public String generatePID(String date, String issuer, String product, String productID){
-        return Integer.toString(Objects.hash(date, issuer, productID));
+        return Integer.toString(Objects.hash(date, issuer, product, productID));
     }
 
     /**
      * Issue a prescription, creates a new prescription to be used by a GP
      * String date, String issuer, String owner, String product, String productID, String productPackage, String quantity, String doseStrength, String doseType, String doseQuantity, String instruction, String comment
-     * @param {Context} ctx the transaction context
-     * @param {String} date of when the prescription was issued
-     * @param {String} issuer of the prescription (e.g. GP)
-     * @param {String} Medical product title  
-     * @param {String} Product ID which relates to the medicine 
-     * @param {String} Quantity of the product needed to complete prescription
-     * @param {String} Dose strength (e.g. 200mg)
-     * @param {String} Dose quantity how many insances of the medical product 
-     * @param {String} Instruction in how to consume the medication
-     * @param {String} Comments in addition to the instructions
+     * @param ctx The transaction context
+     * @param date The date when the prescription was issued
+     * @param issuer The issuer of the prescription (e.g. GP)
+     * @param product Medical product title  
+     * @param productID Product ID which relates to the medicine 
+     * @param productPackage Type of package the product is in 
+     * @param quantity Quantity of the product needed to complete prescription
+     * @param doseStrength Dose strength (e.g. 200mg)
+     * @param doseType The type of medication (Tablets, dropper)
+     * @param doseQuantity Dose quantity how many insances of the medical product 
+     * @param instruction Instruction in how to consume the medication
+     * @param comments Comments in addition to the instructions
+     * @return The string json value of the entry added to the ledger
      */
     @Transaction(intent = Transaction.TYPE.SUBMIT)
     public String issue(final Context ctx, String date, String issuer, String product, String productID, String productPackage, String quantity, String doseStrength, String doseType, String doseQuantity, String instruction, String comment){
         ChaincodeStub stub = ctx.getStub();
-        String PID = "0001"; //generatePID(date, issuer, product, productID);
-        //Create instance of prescription
-        Prescription prescription = new Prescription(PID, date, issuer, "", product, productID, productPackage, quantity, doseStrength, doseType, doseQuantity, instruction, comment);
-        // //Prescription is owned by the issuer
-        prescription.setOwner(issuer);
-        // System.out.println(prescription.toString());
-        String JSON = genson.serialize(prescription);
-        stub.putStringState(PID, JSON);
-        // return prescription;
+        String JSON = "";
+        String PID = generatePID(date, issuer, product, productID);
+        String status = "ACTIVE";
+        if(!prescriptionExists(ctx, PID)){
+            //Create instance of prescription
+            Prescription prescription = new Prescription(PID, date, issuer, "", product, productID, productPackage, quantity, doseStrength, doseType, doseQuantity, instruction, comment, status);
+            //Prescription is owned by the issuer
+            prescription.setOwner(issuer);
+            JSON = genson.serialize(prescription);
+            stub.putStringState(PID, JSON);
+        }
+        return JSON;
+    }
+    /**
+     *  Updates the properties of an prescription on the ledger.
+     * @param ctx The transaction context
+     * @param PID The PID of the prescription to be updated
+     * @param date The date when the prescription was issued
+     * @param issuer The issuer of the prescription (e.g. GP)
+     * @param owner The current owner of the prescription
+     * @param product Medical product title  
+     * @param productID Product ID which relates to the medicine 
+     * @param productPackage Type of package the product is in 
+     * @param quantity Quantity of the product needed to complete prescription
+     * @param doseStrength Dose strength (e.g. 200mg)
+     * @param doseType The type of medication (Tablets, dropper)
+     * @param doseQuantity Dose quantity how many insances of the medical product 
+     * @param instruction Instruction in how to consume the medication
+     * @param comments Comments in addition to the instructions
+     * @return A string containing the updated prescription
+     */
+    @Transaction(intent = Transaction.TYPE.SUBMIT)
+    public String updatePrescription(final Context ctx,String PID, String date, String issuer, String owner, String product, String productID, String productPackage, String quantity, String doseStrength, String doseType, String doseQuantity, String instruction, String comment, String status) {
+        ChaincodeStub stub = ctx.getStub();
+        String JSON = "";
+        if (prescriptionExists(ctx, PID)) {
+            Prescription prescription = new Prescription(PID, date, issuer,  owner,  product,  productID,  productPackage,  quantity,  doseStrength,  doseType,  doseQuantity,  instruction,  comment, status);
+            JSON = genson.serialize(prescription);
+            stub.putStringState(PID, JSON);    
+        }
         return JSON;
     }
 
     /**
      * This method retrieves all prescriptions from the blockchain
-     * returns a string of the combination of all assets
+     * @param ctx The given context 
+     * @return A string of the combined entries in the database
      */
     @Transaction(intent = Transaction.TYPE.EVALUATE)
     public String getAllPrescriptions(final Context ctx){
@@ -81,8 +125,76 @@ public final class PrescriptionContract implements ContractInterface {
             Prescription prescription = Prescription.deserialize(result.getStringValue());
             queryResults.add(prescription);
         }
-
         final String response = genson.serialize(queryResults);
         return response;
+    }
+
+    /**
+    * This method changes ownership of the prescription
+    * @param ctx The given context 
+    * @param PID The PID of the prescription
+    * @param newOwner The new owner of the prescription
+    * @return A string containing the updated prescription
+    */
+    @Transaction(intent = Transaction.TYPE.SUBMIT)
+    public String TransferAsset(final Context ctx, final String PID, final String newOwner) {
+        ChaincodeStub stub = ctx.getStub();
+        String JSON = stub.getStringState(PID);
+        if (JSON != null ) {
+            Prescription prescription = Prescription.deserialize(JSON);
+
+            prescription.setOwner(newOwner);
+            JSON = genson.serialize(prescription);
+            stub.putStringState(PID, JSON);
+        }
+        return JSON;
+    }
+
+    /**
+    * This method changes status of the prescription
+    * @param ctx The given context 
+    * @param PID The PID of the prescription
+    * @param status The new owner of the prescription
+    * @return A string containing the updated prescription
+    */
+    @Transaction(intent = Transaction.TYPE.SUBMIT)
+    public String changeStatus(final Context ctx, String PID, String status) {
+        ChaincodeStub stub = ctx.getStub();
+        String JSON = stub.getStringState(PID);
+        if (JSON != null ) {
+            Prescription prescription = Prescription.deserialize(JSON);
+            prescription.setStatus(status);
+            JSON = genson.serialize(prescription);
+            stub.putStringState(PID, JSON);
+        }
+        return JSON;
+    }
+
+    /**
+     * This method is still in progress (IT WILL RETURN ALL TRANSACTION HISTORY OF A KEY)
+     * @param ctx
+     * @param PID
+     * @return
+     */
+    @Transaction(intent = Transaction.TYPE.EVALUATE)
+    public String getHistoryForKey(final Context ctx, String PID){
+        ChaincodeStub stub = ctx.getStub();
+        List<Prescription> queryResults = new ArrayList<Prescription>();
+        QueryResultsIterator<KeyModification> results =  stub.getHistoryForKey(PID);
+        return "";
+    }
+
+    /**
+     * Checks the existence of the prescription on the ledger
+     *
+     * @param ctx the transaction context
+     * @param PID the ID of the prescription
+     * @return boolean indicating the existence of the asset
+     */
+    @Transaction(intent = Transaction.TYPE.EVALUATE)
+    public boolean prescriptionExists(final Context ctx, final String PID) {
+        ChaincodeStub stub = ctx.getStub();
+        String prescriptionJSON = stub.getStringState(PID);
+        return (prescriptionJSON != null && !prescriptionJSON.isEmpty());
     }
 }

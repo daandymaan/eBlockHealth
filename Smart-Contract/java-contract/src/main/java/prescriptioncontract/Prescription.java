@@ -33,6 +33,8 @@ public class Prescription {
      private String instruction;
      @Property()
      private String comment;
+     @Property
+     private String status;
 
      //Getters and setters for values
      public String getPID() {
@@ -138,7 +140,14 @@ public class Prescription {
      public void setComment(String comment) {
          this.comment = comment;
      }
- 
+
+     public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
  
      /**
       * Deserialize a state data to prescription
@@ -163,8 +172,9 @@ public class Prescription {
          String doseQuantity = json.getString("doseQuantity");
          String instruction = json.getString("instruction");
          String comment = json.getString("comment");
+         String status = json.getString("status");
          
-         return new Prescription(PID, date, issuer,  owner,  product,  productID,  productPackage,  quantity,  doseStrength,  doseType,  doseQuantity,  instruction,  comment);
+         return new Prescription(PID, date, issuer,  owner,  product,  productID,  productPackage,  quantity,  doseStrength,  doseType,  doseQuantity,  instruction,  comment, status);
      }
  
      public static byte[] serialize(Prescription prescription) {
@@ -175,7 +185,7 @@ public class Prescription {
      //Without state
      public Prescription(String PID, String date, String issuer, String owner, String product, String productID,
              String productPackage, String quantity, String doseStrength, String doseType, String doseQuantity,
-             String instruction, String comment) {
+             String instruction, String comment, String status) {
 
          this.PID = PID;
          this.date = date;
@@ -190,18 +200,19 @@ public class Prescription {
          this.doseQuantity = doseQuantity;
          this.instruction = instruction;
          this.comment = comment;
+         this.status = status;
      }
  
      public Prescription() {
 
 	}
 
-	@Override
-     public String toString() {
-         return "Prescription [PID=" + PID + ", comment=" + comment + ", date=" + date + ", doseQuantity=" + doseQuantity
-                 + ", doseStrength=" + doseStrength + ", doseType=" + doseType + ", instruction=" + instruction
-                 + ", issuer=" + issuer + ", owner=" + owner + ", product=" + product + ", productID=" + productID
-                 + ", productPackage=" + productPackage + ", quantity=" + quantity + "]";
-     }
- }
+    @Override
+    public String toString() {
+        return "Prescription [PID=" + PID + ", comment=" + comment + ", date=" + date + ", doseQuantity=" + doseQuantity
+                + ", doseStrength=" + doseStrength + ", doseType=" + doseType + ", instruction=" + instruction
+                + ", issuer=" + issuer + ", owner=" + owner + ", product=" + product + ", productID=" + productID
+                + ", productPackage=" + productPackage + ", quantity=" + quantity + ", status=" + status + "]";
+    }
+}
  
