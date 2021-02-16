@@ -1,16 +1,12 @@
 package application;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.security.PrivateKey;
-import java.text.ParseException;
 import java.util.Properties;
 import java.util.Set;
 
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
 import org.hyperledger.fabric.gateway.Identities;
 import org.hyperledger.fabric.gateway.Identity;
@@ -24,8 +20,7 @@ import org.hyperledger.fabric.sdk.security.CryptoSuiteFactory;
 import org.hyperledger.fabric_ca.sdk.EnrollmentRequest;
 import org.hyperledger.fabric_ca.sdk.HFCAClient;
 import org.hyperledger.fabric_ca.sdk.RegistrationRequest;
-import org.json.JSONArray;
-import org.json.JSONObject;
+
 
 public class RegisterUser {
 

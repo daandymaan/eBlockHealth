@@ -28,10 +28,10 @@ cd /home/dan/Docs/fabric-samples/test-network
 #Creates a network with ca and each have a couchdb
 ./network.sh up createChannel -ca -s couchdb 
 
-cp "/home/dan/Docs/fabric-samples/test-network/organizations/peerOrganizations/org1.example.com/connection-org1.yaml" "${DIR}/Orgs/Org1/gateway/"
-cp "/home/dan/Docs/fabric-samples/test-network/organizations/peerOrganizations/org2.example.com/connection-org2.yaml" "${DIR}/Orgs/Org2/gateway/"
+cp "/home/dan/Docs/fabric-samples/test-network/organizations/peerOrganizations/org1.example.com/connection-org1.yaml" "/home/dan/Docs/BlockchainPrescribing/Orgs/Org1/gateway/"
+cp "/home/dan/Docs/fabric-samples/test-network/organizations/peerOrganizations/org2.example.com/connection-org2.yaml" "/home/dan/Docs/BlockchainPrescribing/Orgs/Org2/gateway/"
 
-cd /home/dan/Docs/BlockchainPrescribing
+cd /home/dan/Docs/BlockchainPrescribing/Scripts
 
 # Run this script to install chaincode
 ./deployCC.sh

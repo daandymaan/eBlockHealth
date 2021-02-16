@@ -22,7 +22,7 @@ function println() {
 
 CHANNEL_NAME="mychannel"
 CC_NAME="pc"                #chaincode-java
-CC_SRC_PATH=./Smart-Contract/java-contract/
+CC_SRC_PATH=/home/dan/Docs/BlockchainPrescribing/Smart-Contract/java-contract
 CC_SRC_LANGUAGE=java
 CC_RUNTIME_LANGUAGE=java
 CC_VERSION="1.0"
