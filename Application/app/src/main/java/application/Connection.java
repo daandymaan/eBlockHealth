@@ -1,5 +1,6 @@
 package application;
 
+
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -31,5 +32,9 @@ public class Connection {
         Contract contract = network.getContract("pc");
         System.out.println("Contract found");
         return contract;
+    }
+
+    public String getJson(){
+        return null;
     }
 }
