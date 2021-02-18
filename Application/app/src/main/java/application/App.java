@@ -7,7 +7,14 @@ import com.google.gson.JsonObject;
 
 import org.hyperledger.fabric.gateway.Contract;
 
+import javax.management.Notification;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
+@Path("/test")
 public class App {
 
     //Needed to run application locally
@@ -60,5 +67,12 @@ public class App {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @GET
+    @Path("/getJSON")
+    @Produces(MediaType.TEXT_PLAIN)
+    public String getJSON(){
+        return "cheese";
     }
 }

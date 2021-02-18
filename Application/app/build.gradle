@@ -19,7 +19,6 @@ ext{
 repositories {
     // Use JCenter for resolving dependencies.
     jcenter()
-    jcenter()
     mavenLocal()
     mavenCentral()
     maven {
@@ -36,6 +35,16 @@ dependencies {
     implementation group: 'org.hyperledger.fabric-chaincode-java', name: 'fabric-chaincode-shim', version: '2.+'
     implementation 'org.hyperledger.fabric:fabric-gateway-java:2.2.0'
     implementation group: 'org.json', name: 'json', version: '20180813'
+
+    //Local dependency 
+    // implementation files('/opt/tomcat/apache-tomcat-8.5.63/lib/servlet-api.jar')
+
+    // https://mvnrepository.com/artifact/javax/javaee-api
+    implementation group: 'javax', name: 'javaee-api', version: '7.0'
+    // https://mvnrepository.com/artifact/org.glassfish.jersey.bundles/jaxrs-ri
+    implementation group: 'org.glassfish.jersey.bundles', name: 'jaxrs-ri', version: '2.32'
+
+
 }
 
 application {
