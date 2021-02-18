@@ -1,0 +1,12 @@
+body{
+  font-family: 'Montserrat', sans-serif;
+}
+
+.container{
+  text-align: center;
+}
+
+li :hover{
+  background-color: #0072ec;
+  color: black;
+}

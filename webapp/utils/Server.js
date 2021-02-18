@@ -1,5 +1,3 @@
-
-
 function getRequest(url){
     const HTTP = new XMLHttpRequest();
     HTTP.open("GET", url, true);
