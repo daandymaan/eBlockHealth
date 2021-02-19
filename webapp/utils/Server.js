@@ -1,16 +1,18 @@
-function getRequest(url){
+
+export function getRequest(url, callback){
     const HTTP = new XMLHttpRequest();
-    HTTP.open("GET", url, true);
+    HTTP.open("GET", url , true);
     HTTP.send();
 
     HTTP.onreadystatechange=function(){
-        if(this.readyState==4 && this.status==200){
-            return HTTP.response
+        if(HTTP.readyState==4 && HTTP.status==200){
+            if (callback) callback(HTTP.response);
         }
     }.bind(this);
 }
 
-function postRequest(url, content){
+
+export function postRequest(url, content){
     var json = JSON.stringify(content);
 
     const HTTP = new XMLHttpRequest();
@@ -20,6 +22,25 @@ function postRequest(url, content){
         if(HTTP.readyState==4 && HTTP.status==200){
             console.log("Connection received");
         }
-    }.bind(this);
-
+    }
+    HTTP.send(json);
 }
+
+export function getTransactionsFromUser(ID, callback){
+    console.log("getTransactionsFromUser");
+    var url = "http://localhost:8080/app/api/test/getJSON"
+    var url2 = "" + ID;
+    this.getRequest(url, function(value){
+        if(callback) callback(value);
+    });
+}
+
+export function getPrescriptionsForUser(ID, callback){
+    var url = "" + ID;
+    url = "http://localhost:8080/app/api/test/getJSON"
+    this.getRequest(url, function(value){
+        if(callback) callback(value);
+    });
+}
+
+export default {getRequest, postRequest, getTransactionsFromUser, getPrescriptionsForUser}
