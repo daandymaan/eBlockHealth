@@ -43,4 +43,31 @@ export function getPrescriptionsForUser(ID, callback){
     });
 }
 
-export default {getRequest, postRequest, getTransactionsFromUser, getPrescriptionsForUser}
+export function sendPrescriptionToUser(data){
+    var url = "";
+    this.postRequest(url, data);
+}
+
+export function getUserDetails(loginDetails, callback){
+    var url = ""+ loginDetails.PPSN + "/" + loginDetails.DOB;
+    var tempvalue = "success";
+    // this.getRequest(url, function(value){
+    //     if(callback) callback(value);
+    if(callback) callback(tempvalue);
+    // }); 
+}
+
+export function userAuthentication(credentials, callback){
+    var url = "" + credentials.PPSN + "/" + credentials.pattern + "/" + credentials.passcode;
+    var tempvalue = "success";
+    // if(credentials.passcode == "333"){
+    //     tempvalue = "success"
+    // }
+    // this.getRequest(url, function(value){
+    //     if(callback) callback(value);
+    if(callback) callback(tempvalue);
+}
+
+export default {getRequest, postRequest, getTransactionsFromUser, 
+    getPrescriptionsForUser, sendPrescriptionToUser, getUserDetails,
+    userAuthentication}

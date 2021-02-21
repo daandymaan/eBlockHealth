@@ -1,8 +1,4 @@
 import Server from './Server.js'
-
-if(sessionStorage.getItem("ID") == null){
-    console.log("Not logged in");
-}
 Server.getTransactionsFromUser("cheese", function(data){
     var sampleList = [{"PID" : "389201303", "Owner": "admin", "Issuer":"GP"},
                       {"PID" : "00005006", "Owner": "dan", "Issuer":"GP"}];
