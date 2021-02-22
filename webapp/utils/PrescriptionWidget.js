@@ -104,7 +104,9 @@ function transferPrescription(data){
             transferData.PID = data.PID;
             transferData.owner = data.owner;
             transferData.recipient = inputBox.value;
-            Server.sendPrescriptionToUser(transferData);
+            Server.sendPrescriptionToUser(transferData, function(value){
+                console.log(value);
+            });
         }
     }
 

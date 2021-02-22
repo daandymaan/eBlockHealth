@@ -6,7 +6,7 @@ body{
   text-align: center;
 }
 
-li :hover{
+.navbar li a:hover{
   background-color: #0072ec;
   color: black;
 }
@@ -80,5 +80,8 @@ th {
 }
 
 .dropdown-menu{
-  background-color: white;
+  background-color: #007bff;
+}
+#logoutbtn{
+  cursor: pointer;
 }

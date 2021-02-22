@@ -11,6 +11,9 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js"></script>
+  <script type="module" src="../utils/NavBarUpdate.js"></script>
+  <script type="module" src="../utils/InfoCard.js"></script>
 
 </head>
 <body>
@@ -35,11 +38,103 @@
       </li>
     </ul>
     <ul class="nav navbar-nav ml-auto">
-      <li class="nav-item">
-        <a class="nav-link" href="../v_details/v_details.html"><span class="fas fa-sign-in-alt"></span> Login</a>
+      <li id="navClass" class="nav-item dropleft">
+        <a id="navSideButton"class="nav-link" href="../login/login.html"><span class="fas fa-sign-in-alt"></span> Login</a>
       </li>
     </ul>
   </div>  
 </nav>
+
+<div class="jumbotron text-center" style="margin-bottom:0">
+<h1>My details</h1>
+</div>
+<br><hr>
+
+<div class="container">
+  <div class="row">
+      <div class="col-12">
+          <div class="card">
+              <div class="card-body">
+                  <div class="card-title mb-4">
+                      <div class="d-flex justify-content-start">
+                          <div class="userData ml-3">
+                              <h2 id="PPSNNO" class="d-block" style="font-size: 1.5rem; font-weight: bold">Some Name</h2>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="row">
+                      <div class="col-12">
+                              <div class="tab-pane fade show active" id="basicInfo" role="tabpanel" aria-labelledby="basicInfo-tab">
+                                  <div class="row">
+                                      <div class="col-sm-5 col-md-5 col-5">
+                                          <label style="font-weight:bold;">Full Name</label>
+                                      </div>
+                                      <div id="NAME" class="col-md-7 col-7">
+                                          Full Name
+                                      </div>
+                                  </div>
+                                  <hr />
+                                  <div class="row">
+                                      <div class="col-sm-5 col-md-5 col-5">
+                                          <label style="font-weight:bold;">Date of birth</label>
+                                      </div>
+                                      <div id="DOB" class="col-md-7 col-7">
+                                          DOB
+                                      </div>
+                                  </div>
+                                  <hr />
+                                  <div class="row">
+                                      <div class="col-sm-5 col-md-5 col-5">
+                                          <label style="font-weight:bold;">Status</label>
+                                      </div>
+                                      <div id="STATUS" class="col-md-7 col-7">
+                                        Status
+                                      </div>
+                                  </div>
+                                  <hr />
+                                  <div class="row">
+                                    <div id="viewCertDiv">
+                                      <button id="v_address_btn" data-toggle="modal" data-target="#modalView" class="btn btn-outline-success" type="button" name="View Prescription Address">View prescription address</button>
+                                    </div>
+                                  </div>
+                                  <hr />
+                            </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="modalView">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title" id="modal-title">Prescription Address</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body" id="modal-body">
+        <input id="cert" class="form-control" value="-----BEGIN CERTIFICATE-----\nMIICKTCCAdCgAwIBAgIUVPmv8E5VloDgOsASnNmp5uz0LlkwCgYIKoZIzj0EAwIw\ncDELMAkGA1UEBhMCVVMxFzAVBgNVBAgTDk5vcnRoIENhcm9saW5hMQ8wDQYDVQQH\nEwZEdXJoYW0xGTAXBgNVBAoTEG9yZzEuZXhhbXBsZS5jb20xHDAaBgNVBAMTE2Nh\nLm9yZzEuZXhhbXBsZS5jb20wHhcNMjEwMjEyMTk1NzAwWhcNMjIwMjEyMjAwMjAw\nWjAhMQ8wDQYDVQQLEwZjbGllbnQxDjAMBgNVBAMTBWFkbWluMFkwEwYHKoZIzj0C\nAQYIKoZIzj0DAQcDQgAEFtvm0W4bgpS8+M2woagYbCEAfytE24JqR+kggeaBMFdX\nXSSZ4u7Ng3xaCXqG3twCPcwX/GIjSfBSq6aVQ6KD0qOBljCBkzAOBgNVHQ8BAf8E\nBAMCA6gwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMAwGA1UdEwEB/wQC\nMAAwHQYDVR0OBBYEFCHs0/qQ2+Q+62TA8U3dQV9otHoLMB8GA1UdIwQYMBaAFCb9\nbhmqXrpO4lcIRw71vuwucn8KMBQGA1UdEQQNMAuCCWxvY2FsaG9zdDAKBggqhkjO\nPQQDAgNHADBEAiBtAXWz59nOkKd/Vy1gkdZ5AkYVChiK3Q8eSOZGT6dBaAIgd6eC\ni8IQFtm1J0kGaECHtmpTZMRDjaYlHdHbRY4FONs=\n-----END CERTIFICATE-----\n">
+        <button type="button" class="btn" data-clipboard-target="#cert" style="float: right;">
+          <img src="../images/copy.webp" alt="Copy to clipboard" width="10%">
+        </button>
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer" id="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
 </body>
 </html>

@@ -23,6 +23,7 @@ if(sessionStorage.getItem("ID") == null){
 
     var logout = document.createElement("a");
     logout.className = "dropdown-item";
+    logout.id = "logoutbtn";
     logout.innerHTML = "Logout";
     logout.onclick = function(){
         sessionStorage.removeItem("ID");

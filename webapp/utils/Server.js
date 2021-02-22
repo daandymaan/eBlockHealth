@@ -40,14 +40,14 @@ function getRequest(url, callback){
     });
 }
 
-function postRequest(url, data){
+function postRequest(url, data, callback){
     $.ajax(url, {
         //dataType: 'json,
         dataType: 'text',
         method: 'POST',
         data: data,
         success: function (data, status, xhr) {
-            console.log("Success");
+            if (callback) callback(data);
         },
         error: function (jqXhr, textStatus, errorMessage) {
             console.log(errorMessage);
@@ -73,12 +73,14 @@ export function getPrescriptionsForUser(ID, callback){
     });
 }
 
-export function sendPrescriptionToUser(data){
+export function sendPrescriptionToUser(data, callback){
     var url = "";
-    this.postRequest(url, data);
+    this.postRequest(url, data, function(value){
+        if(callback) callback(value);
+    });
 }
 
-export function getUserDetails(loginDetails, callback){
+export function isUser(loginDetails, callback){
     var url = ""+ loginDetails.PPSN + "/" + loginDetails.DOB;
     var tempvalue = "success";
     // this.getRequest(url, function(value){
@@ -88,16 +90,28 @@ export function getUserDetails(loginDetails, callback){
 }
 
 export function userAuthentication(credentials, callback){
-    var url = "" + credentials.PPSN + "/" + credentials.pattern + "/" + credentials.passcode;
+    var url = "";
     var tempvalue = "success";
     // if(credentials.passcode == "333"){
     //     tempvalue = "success"
     // }
-    // this.getRequest(url, function(value){
+    // this.postRequest(url, credentials, function(value){
     //     if(callback) callback(value);
-    if(callback) callback(tempvalue);
+    // });
+    callback(tempvalue);
 }
 
-export default {cheese, getRequest, postRequest, getTransactionsFromUser, 
-    getPrescriptionsForUser, sendPrescriptionToUser, getUserDetails,
+export function getDetailsForUser(ID, callback){
+    var url = ""+ "/" + ID;
+    var details = {"PPSN":"3324784V", "passcode":"7q0z1em9", "DOB" : "01-01-1999", "status" : "C", "address" : "-----BEGIN CERTIFICATE-----\nMIICKTCCAdCgAwIBAgIUVPmv8E5VloDgOsASnNmp5uz0LlkwCgYIKoZIzj0EAwIw\ncDELMAkGA1UEBhMCVVMxFzAVBgNVBAgTDk5vcnRoIENhcm9saW5hMQ8wDQYDVQQH\nEwZEdXJoYW0xGTAXBgNVBAoTEG9yZzEuZXhhbXBsZS5jb20xHDAaBgNVBAMTE2Nh\nLm9yZzEuZXhhbXBsZS5jb20wHhcNMjEwMjEyMTk1NzAwWhcNMjIwMjEyMjAwMjAw\nWjAhMQ8wDQYDVQQLEwZjbGllbnQxDjAMBgNVBAMTBWFkbWluMFkwEwYHKoZIzj0C\nAQYIKoZIzj0DAQcDQgAEFtvm0W4bgpS8+M2woagYbCEAfytE24JqR+kggeaBMFdX\nXSSZ4u7Ng3xaCXqG3twCPcwX/GIjSfBSq6aVQ6KD0qOBljCBkzAOBgNVHQ8BAf8E\nBAMCA6gwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMAwGA1UdEwEB/wQC\nMAAwHQYDVR0OBBYEFCHs0/qQ2+Q+62TA8U3dQV9otHoLMB8GA1UdIwQYMBaAFCb9\nbhmqXrpO4lcIRw71vuwucn8KMBQGA1UdEQQNMAuCCWxvY2FsaG9zdDAKBggqhkjO\nPQQDAgNHADBEAiBtAXWz59nOkKd/Vy1gkdZ5AkYVChiK3Q8eSOZGT6dBaAIgd6eC\ni8IQFtm1J0kGaECHtmpTZMRDjaYlHdHbRY4FONs=\n-----END CERTIFICATE-----\n", "firstname" : "Daniel", "surname": "simons"};
+    // this.getRequest(url, function(value){
+    //     if(callback) callback(value);
+    // })
+    if(callback) callback(details);
+}
+
+
+
+export default {getDetailsForUser, getRequest, postRequest, getTransactionsFromUser, 
+    getPrescriptionsForUser, sendPrescriptionToUser, isUser,
     userAuthentication}

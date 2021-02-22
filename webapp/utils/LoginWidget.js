@@ -15,7 +15,7 @@ submitButton.onclick = function(){
     } else {
         errorMsg.innerHTML = ""
         var loginDetails = {"PPSN" : PPSN.value, "DOB" : DOB.value};
-        Server.getUserDetails(loginDetails, function(value){
+        Server.isUser(loginDetails, function(value){
             if(value == "success"){
                 
                 var inputNo = [];
