@@ -1,29 +1,59 @@
 
-export function getRequest(url, callback){
-    const HTTP = new XMLHttpRequest();
-    HTTP.open("GET", url , true);
-    HTTP.send();
+// export function getRequest(url, callback){
+//     const HTTP = new XMLHttpRequest();
+//     HTTP.open("GET", url , true);
+//     HTTP.send();
 
-    HTTP.onreadystatechange=function(){
-        if(HTTP.readyState==4 && HTTP.status==200){
-            if (callback) callback(HTTP.response);
+//     HTTP.onreadystatechange=function(){
+//         if(HTTP.readyState==4 && HTTP.status==200){
+//             if (callback) callback(HTTP.response);
+//         }
+//     }.bind(this);
+// }
+
+// export function postRequest(url, content){
+//     var json = JSON.stringify(content);
+
+//     const HTTP = new XMLHttpRequest();
+//     HTTP.open("POST", url, true);
+//     HTTP.setRequestHeader("Content-type", "application/json; charset=utf-8'");
+//     HTTP.onreadystatechange=function(){
+//         if(HTTP.readyState==4 && HTTP.status==200){
+//             console.log("Connection received");
+//         }
+//     }
+//     HTTP.send(json);
+// }
+
+function getRequest(url, callback){
+    $.ajax(url,{
+        //dataType: 'json,
+        dataType: 'text',
+        method: 'GET',
+        timeout: 500,
+        success: function(data,status,xhr){
+            if (callback) callback(data);
+        },
+        error: function(jqXhr, textStatus, errorMessage){
+            console.log(errorMessage);
         }
-    }.bind(this);
+    });
 }
 
-
-export function postRequest(url, content){
-    var json = JSON.stringify(content);
-
-    const HTTP = new XMLHttpRequest();
-    HTTP.open("POST", url, true);
-    HTTP.setRequestHeader("Content-type", "application/json; charset=utf-8'");
-    HTTP.onreadystatechange=function(){
-        if(HTTP.readyState==4 && HTTP.status==200){
-            console.log("Connection received");
+function postRequest(url, data){
+    $.ajax(url, {
+        //dataType: 'json,
+        dataType: 'text',
+        method: 'POST',
+        data: data,
+        success: function (data, status, xhr) {
+            console.log("Success");
+        },
+        error: function (jqXhr, textStatus, errorMessage) {
+            console.log(errorMessage);
         }
-    }
-    HTTP.send(json);
+
+    })
 }
 
 export function getTransactionsFromUser(ID, callback){
@@ -68,6 +98,6 @@ export function userAuthentication(credentials, callback){
     if(callback) callback(tempvalue);
 }
 
-export default {getRequest, postRequest, getTransactionsFromUser, 
+export default {cheese, getRequest, postRequest, getTransactionsFromUser, 
     getPrescriptionsForUser, sendPrescriptionToUser, getUserDetails,
     userAuthentication}
