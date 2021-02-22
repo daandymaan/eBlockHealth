@@ -35,7 +35,7 @@ public class App {
         json.addProperty("cert", "undefined");
 
         JsonObject data = new JsonObject();
-        data.addProperty("date", "11/02/2021");
+        data.addProperty("date", "11-02-2021");
         data.addProperty("product", "LEXAPRO");
         data.addProperty("productID", "G551");
         data.addProperty("productPackage", "");
