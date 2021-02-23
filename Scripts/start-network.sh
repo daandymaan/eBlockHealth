@@ -34,4 +34,5 @@ cp "/home/dan/Docs/fabric-samples/test-network/organizations/peerOrganizations/o
 cd /home/dan/Docs/BlockchainPrescribing/Scripts
 
 # Run this script to install chaincode
-./deployCC.sh
+./deployCC.sh infocontract /home/dan/Docs/BlockchainPrescribing/Smart-Contract/info-contract
+./deployCC.sh pc /home/dan/Docs/BlockchainPrescribing/Smart-Contract/java-contract
