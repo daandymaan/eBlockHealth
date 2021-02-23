@@ -18,9 +18,9 @@ import org.hyperledger.fabric.shim.ledger.KeyValue;
 import org.hyperledger.fabric.shim.ledger.QueryResultsIterator;
 
 @Contract(
-        name = "pc",
+        name = "infocontract",
         info = @Info(
-                title = "Prescription contract",
+                title = "User contract",
                 description = "Allows the creation and transfer of prescriptions",
                 version = "0.0.1-SNAPSHOT",
                 license = @License(
