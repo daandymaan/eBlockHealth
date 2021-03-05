@@ -137,7 +137,7 @@ public final class PrescriptionContract implements ContractInterface {
     * @return A string containing the updated prescription
     */
     @Transaction(intent = Transaction.TYPE.SUBMIT)
-    public String TransferAsset(final Context ctx, final String PID, final String newOwner) {
+    public String transferPrescription(final Context ctx, final String PID, final String newOwner) {
         ChaincodeStub stub = ctx.getStub();
         String JSON = stub.getStringState(PID);
         if (JSON != null ) {

@@ -3,7 +3,9 @@
  */
 package application;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import org.hyperledger.fabric.gateway.Contract;
 
@@ -28,14 +30,16 @@ public class App {
 
     public static void main(String[] args) {
         System.out.println(new App().getGreeting());
-        JsonObject json = new JsonObject();
-        json.addProperty("PPSN", "3324784V");
-        json.addProperty("pattern", "01234567");
-        json.addProperty("passcode", "7q0z1em9");
-        json.addProperty("cert", "undefined");
+        JsonObject user = new JsonObject();
+        user.addProperty("identifier", "3324784V");
+        user.addProperty("pattern", "01234567");
+        user.addProperty("passcode", "7q0z1em9");
+        user.addProperty("cert", "undefined");
 
         JsonObject data = new JsonObject();
         data.addProperty("date", "11-02-2021");
+        data.addProperty("issuer", "admin");
+        data.addProperty("owner", "me");
         data.addProperty("product", "LEXAPRO");
         data.addProperty("productID", "G551");
         data.addProperty("productPackage", "");
@@ -47,32 +51,33 @@ public class App {
         data.addProperty("comment", "");
 
         JsonObject admin = new JsonObject();
-        admin.addProperty("PPSN", "admin");
+        admin.addProperty("identifier", "admin");
 
-        RegisterUser.enrollAdmin();
-        // RegisterUser.enrollUser(json);
-        try {
-            Authentication authentication = new Authentication();
-            // json = authentication.authenticateUser(json);
-            // if(json.get("cert").getAsString().equals("undefined")){
-            //     System.out.println("Authentication failed please enter correct details");
-            // } else {
-                System.out.println("Authentication succeeded have a nice day");
-                System.out.println(json.get("cert").getAsString());
-                Contract contract = Connection.connect(admin);
-                PrescriptionRequests.createPrescription(contract, data, json);
-                PrescriptionRequests.getAllPrescriptions(contract);
-            // }
+        // RegisterUser.enrollAdmin();
+        // // RegisterUser.enrollUser(json);
+        // try {
+        //     Authentication authentication = new Authentication();
+        //     // json = authentication.authenticateUser(json);
+        //     // if(json.get("cert").getAsString().equals("undefined")){
+        //     //     System.out.println("Authentication failed please enter correct details");
+        //     // } else {
+        //         System.out.println("Authentication succeeded have a nice day");
+        //         System.out.println(user.get("cert").getAsString());
+        //         PrescriptionRequests.createPrescription(data, user);
+        //         PrescriptionRequests.getAllPrescriptions(user);
+        //     // }
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        // } catch (Exception e) {
+        //     e.printStackTrace();
+        // }
     }
 
     @GET
     @Path("/getJSON")
     @Produces(MediaType.TEXT_PLAIN)
-    public String getJSON(){
-        return "cheese";
+    public static String getJSON(/**String user**/){
+        // JsonObject json = JsonParser.parseString(user).getAsJsonObject();
+        // System.out.println("JSONOBJECT : " + json.toString());
+        return "Cheese";
     }
 }
