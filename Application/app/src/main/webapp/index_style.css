@@ -1,0 +1,87 @@
+body{
+  font-family: 'Montserrat', sans-serif;
+}
+
+.container{
+  text-align: center;
+}
+
+.navbar li a:hover{
+  background-color: #0072ec;
+  color: black;
+}
+
+th {
+  background-color: #c4dffc;
+  color: rgb(0, 0, 0);
+}
+
+.card{
+  text-align: center;
+  display: inline-block;
+  padding-bottom: 5%;
+  padding-left: 2%;
+  padding-right: 2%;
+  margin: 2%;
+}
+
+#loginsplashscreen{
+  background-image: url(./images/pattern.jpg);
+  background-repeat: repeat;
+  background-size: 50%;
+}
+
+.login-container{
+  width: 50%;
+  margin-top: 5%;
+  margin-bottom: 5%;
+}
+.login-form-1{
+  text-align: center;
+  padding: 5%;
+  box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 9px 26px 0 rgba(0, 0, 0, 0.19);
+  background-color: white;
+}
+.login-form-1 h3{
+  text-align: center;
+  color: #333;
+}
+.login-container form{
+  padding: 5%;
+}
+.btnSubmit
+{
+  width: 50%;
+  border-radius: 1rem;
+  padding: 1.5%;
+  border: none;
+  cursor: pointer;
+}
+.login-form-1 .ForgetPwd{
+  color: #0062cc;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.pin-inputs{
+  display: flex;
+  flex-direction: row;
+}
+.digitinput{
+  margin-left: auto;
+  display: block;
+  font-size: xx-large;
+  width: 2ch;
+  text-align: center;
+
+}
+.modal-content span{
+  text-align: center;
+}
+
+.dropdown-menu{
+  background-color: #007bff;
+}
+#logoutbtn{
+  cursor: pointer;
+}

@@ -39,8 +39,4 @@ public class Connection {
         System.out.println("Contract found");
         return contract;
     }
-
-    public String getJson(){
-        return null;
-    }
 }
