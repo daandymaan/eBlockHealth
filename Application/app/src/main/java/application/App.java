@@ -11,6 +11,7 @@ import org.hyperledger.fabric.gateway.Contract;
 
 import javax.management.Notification;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
@@ -72,12 +73,14 @@ public class App {
         // }
     }
 
-    @GET
+    @POST
     @Path("/getJSON")
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
     public static String getJSON(/**String user**/){
         // JsonObject json = JsonParser.parseString(user).getAsJsonObject();
         // System.out.println("JSONOBJECT : " + json.toString());
-        return "Cheese";
+        JsonObject json = new JsonObject();
+        json.addProperty("msg", "cheese");
+        return json.toString();
     }
 }
