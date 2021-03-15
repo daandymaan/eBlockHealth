@@ -1,41 +1,39 @@
 package application;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.logging.Logger;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import org.hyperledger.fabric.gateway.Contract;
-import org.json.JSONObject;
 
 public class UserRequests {
+    private static final Logger LOGGER = Logging.getInstance();
 
     public static String getUsers(JsonObject user) {
-        System.out.println("Get all users");
+        LOGGER.info("getUsers");
         byte result[];
         try {
             Contract contract = Connection.getContract(user, "infocontract");
             result = contract.evaluateTransaction("getAllUsers");
+            LOGGER.info(new String(result));
             return new String(result);
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.info(e.toString());
             JsonObject errorResponse = new JsonObject();
             errorResponse.addProperty("msg", "Users could not be found");
+            LOGGER.info(new String(errorResponse.toString()));
             return errorResponse.toString();
         }
     }
 
     public static String getUserByIdentifier(JsonObject user, String identifier) {
-        System.out.println("Get user by identifier");
+        LOGGER.info("getUserByIdentifier");
         JsonObject userSelected = new JsonObject();
         JsonArray JSONResults = JsonParser.parseString(UserRequests.getUsers(user)).getAsJsonArray();
-
+        LOGGER.info(JSONResults.toString());
         for (JsonElement jsonElement : JSONResults) {
             if(jsonElement.getAsJsonObject().get("identifier").getAsString().equals(identifier)){
                 userSelected = jsonElement.getAsJsonObject();
@@ -71,13 +69,16 @@ public class UserRequests {
 
     public static String createUser(JsonObject user, String identifier, String title, String firstname, 
     String surname, String address, String dob, String gender, String email, String status, String cert) {
-        System.out.println("Create user");
+        LOGGER.info(user.toString());
         byte result[];
         try {
             Contract contract = Connection.getContract(user, "infocontract");
+            LOGGER.info("CONTRACT FOUND");
             result = contract.submitTransaction("createUser", identifier, title, firstname, surname, address, dob, gender, email, status, cert);
+            LOGGER.info(new String(result));
             return new String(result);
         } catch (Exception e) {
+            LOGGER.severe(e.toString());
             JsonObject errorResponse = new JsonObject();
             errorResponse.addProperty("msg", "User could not be created");
             return errorResponse.toString();

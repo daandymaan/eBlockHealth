@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.logging.Logger;
 
 import org.hyperledger.fabric.gateway.Wallet;
 import org.hyperledger.fabric.gateway.Wallets;
@@ -12,35 +13,38 @@ import org.hyperledger.fabric.gateway.Wallets;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-@javax.ws.rs.Path("/authentication")
 public class Authentication {
+    private static final Logger LOGGER = Logging.getInstance();
+    private String walletDIR = "/opt/tomcat/apache-tomcat-8.5.63/webapps/wallets/";
+    // private String walletDIR = "../../wallets";
 
-    @javax.ws.rs.Path("/validateUser")
     public JsonObject authenticateUser(JsonObject user) throws Exception {
         if(userExists(user).equals("success")){
-            System.out.println(user.get("identifier").getAsString() + " found!");
             String passphrase = readPK(user.get("identifier").getAsString());
             if(verifyPK(user, passphrase) == 0){
                 user = addPublicKey(user);
+            } else {
+                return null;
             }
         }
         return user;
     }
 
-    @javax.ws.rs.Path("/verifyUser")
     public String userExists(JsonObject user) throws IOException {
-        Path walletpath = Paths.get("../../wallets");
+        Path walletpath = Paths.get(walletDIR);
         Wallet wallet = Wallets.newFileSystemWallet(walletpath);
         if(wallet.get(user.get("identifier").getAsString()) != null){
+            LOGGER.info(user.get("identifier").getAsString() + " found!");
             return "success";
         } else {
+            LOGGER.info(user.get("identifier").getAsString() + " Not found!");
             return "failure";
         }
     }
 
     public String readPK(String ppsn){     
-        String pathToCredentials = "../../wallets/" + ppsn + ".id";
-        System.out.println("PATH:" + pathToCredentials);
+        String pathToCredentials = walletDIR + ppsn + ".id";
+        LOGGER.info("PATH : " + pathToCredentials);
         try (FileReader reader = new FileReader(pathToCredentials))
         {
             Object obj = JsonParser.parseReader(reader);
@@ -50,9 +54,9 @@ public class Authentication {
             return formatPassKey(privateKey);
 
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            LOGGER.severe(e.toString());
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.severe(e.toString());
         }
         return null;
     }
@@ -63,8 +67,6 @@ public class Authentication {
         for(int i = 230; i > 222; i--){
             formattedKey+= key.charAt(i);
         }
-
-        System.out.println(formattedKey);
         return formattedKey;
     }
 
@@ -73,8 +75,8 @@ public class Authentication {
             int indexOfPassPhrase = Character.getNumericValue(user.get("pattern").getAsString().charAt(i));
             char x = passphrase.charAt(indexOfPassPhrase);
             char y = user.get("passcode").getAsString().charAt(i);
-            if(Character.compare(x,y ) != 0){
-                System.out.println("Incorrect passcode");
+            if(Character.compare(x, y) != 0){
+                LOGGER.severe("Incorrect passcode");
                 return -1;
             }
         }
@@ -82,8 +84,8 @@ public class Authentication {
     }
 
     public JsonObject addPublicKey(JsonObject user){
-        String ppsn = user.get("PPSN").getAsString();
-        String pathToCredentials = "../../wallets/" + ppsn + ".id";
+        String ppsn = user.get("identifier").getAsString();
+        String pathToCredentials = walletDIR + ppsn + ".id";
         try (FileReader reader = new FileReader(pathToCredentials))
         {
             Object obj = JsonParser.parseReader(reader);
@@ -93,9 +95,9 @@ public class Authentication {
             user.addProperty("cert", cert);
 
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            LOGGER.severe(e.toString());
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.severe(e.toString());
         }
         return user;
     }

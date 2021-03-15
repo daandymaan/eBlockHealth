@@ -1,5 +1,8 @@
 package application;
 
+import java.io.IOException;
+import java.util.logging.Logger;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -11,7 +14,8 @@ import com.google.gson.JsonParser;
 
 @Path("/userRequestsGateway")
 public class UserRequestsGateway {
-    
+    private static final Logger LOGGER = Logging.getInstance();
+
     @POST
     @Path("/getAllUsers")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -26,9 +30,14 @@ public class UserRequestsGateway {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public String getUser(String request){
+        LOGGER.info(request);
         JsonObject requestJson = (JsonObject) JsonParser.parseString(request).getAsJsonObject();
+        LOGGER.info(requestJson.toString());
         JsonObject userInfo = requestJson.get("user").getAsJsonObject();
+        LOGGER.info(userInfo.toString());
         String identifier = requestJson.get("identifier").getAsString();
+        LOGGER.info(userInfo.toString());
+        LOGGER.info(identifier);
         return UserRequests.getUserByIdentifier(userInfo, identifier);
     }
 
@@ -73,4 +82,65 @@ public class UserRequestsGateway {
         String cert = newUser.get("cert").getAsString();
         return UserRequests.createUser(userInfo, identifier, title, firstname, surname, address, dob, gender, email, status, cert);
     }
+
+    @POST
+    @Path("/userExists")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public String userDetailsExist(String user){
+        LOGGER.info(user);
+        JsonObject userInfo = (JsonObject) JsonParser.parseString(user).getAsJsonObject();
+        Authentication authentication = new Authentication();
+        JsonObject msg = new JsonObject();
+        try {
+            if(authentication.userExists(userInfo).equals("success")){
+                msg.addProperty("msg", "success");
+            } else {
+                msg.addProperty("msg", "fail");
+            }
+        } catch (IOException e) {
+            LOGGER.severe(e.toString());
+            msg.addProperty("msg", "fail");
+        }
+        return msg.toString();
+    }
+
+    @POST
+    @Path("/authenticateUser")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public String authenticateUser(String user){
+        LOGGER.info(user);
+        JsonObject userInfo = (JsonObject) JsonParser.parseString(user).getAsJsonObject();
+        Authentication authentication = new Authentication();
+        JsonObject msg = new JsonObject();
+        try {
+           JsonObject verifiedUser =  authentication.authenticateUser(userInfo);
+           if(verifiedUser == null){
+               LOGGER.info("Incorrect credentials");
+                msg.addProperty("msg", "fail");
+                return msg.toString();
+           }
+           LOGGER.info(verifiedUser.toString());
+           msg.addProperty("msg", "success");
+           return msg.toString();
+        } catch (Exception e) {
+            LOGGER.severe(e.toString());
+            msg.addProperty("msg", "fail");
+            return msg.toString();
+        }
+    }
+
+
+    @POST
+    @Path("/cheesey")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public String cheesey(String request){
+        // JsonObject requestJson = (JsonObject) JsonParser.parseString(request).getAsJsonObject();
+        JsonObject json = new JsonObject();
+        json.addProperty("msg", "cheesey");
+        return json.toString();
+    }
+
 }

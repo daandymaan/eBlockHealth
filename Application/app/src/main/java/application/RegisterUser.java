@@ -5,6 +5,7 @@ import java.nio.file.Paths;
 import java.security.PrivateKey;
 import java.util.Properties;
 import java.util.Set;
+import java.util.logging.Logger;
 
 import com.google.gson.JsonObject;
 
@@ -24,11 +25,14 @@ import org.hyperledger.fabric_ca.sdk.RegistrationRequest;
 
 public class RegisterUser {
 
+    private static final Logger LOGGER = Logging.getInstance();
     private static String pemLocation = "/home/dan/Docs/fabric-samples/test-network/organizations//peerOrganizations/org1.example.com/ca/ca.org1.example.com-cert.pem";
     private static String url = "https://localhost:7054";
-    // "/home/dan/Docs/BlockchainPrescribing/Wallets"
+    private static String walletDIR = "/opt/tomcat/apache-tomcat-8.5.63/webapps/wallets";
+    // private static String walletDIR = "../../wallets";
 
     public static HFCAClient createCAClient() throws Exception {
+        LOGGER.info("CAClient : Started");
         Properties props = new Properties();
         props.put("pemFile", pemLocation);
         props.put("allowAllHostName", "true");
@@ -39,63 +43,75 @@ public class RegisterUser {
     }
 
     public static Wallet getWallet() throws IOException {
+        LOGGER.info("GET WALLET : Started");
         // Creating wallet where wallets are saved to the directory
-        Wallet wallet = Wallets.newFileSystemWallet(Paths.get("../../wallets"));
+        Wallet wallet = Wallets.newFileSystemWallet(Paths.get(walletDIR));
         return wallet;
     }
 
     public static void enrollAdmin() {
         try {
             HFCAClient ca = createCAClient();
+            LOGGER.info("CAClient : Finished");
             Wallet wallet = getWallet();
+            LOGGER.info("GET WALLET : Finished");
 
             if (wallet.get("admin") != null) {
-                System.out.println("This user has already been enrolled");
+                LOGGER.severe("This user has already been enrolled");
                 return;
             }
 
-            System.out.println("Starting exchanged");
+            LOGGER.info("enrollmentRequest : Started");
             EnrollmentRequest enrollmentRequest = new EnrollmentRequest();
-            System.out.println("After enrollment request");
             enrollmentRequest.addHost("localhost");
             enrollmentRequest.setProfile("tls");
             Enrollment enrollment = ca.enroll("admin", "adminpw", enrollmentRequest);
-            System.out.println("*After enrollment*");
+            LOGGER.info("enrollmentRequest : Completed");
+
             Identity userID = Identities.newX509Identity("Org1MSP", enrollment);
             wallet.put("admin", userID);
+            LOGGER.info("ADMIN GENERATED");
         } catch (Exception e) {
             e.printStackTrace();
+            LOGGER.severe(e.toString());
         }
     }
 
     public static void enrollUser(JsonObject user) {
         try {
             HFCAClient ca = createCAClient();
+            LOGGER.info("CAClient : Finished");
             Wallet wallet = getWallet();
+            LOGGER.info("GET WALLET : Finished");
 
-            if(wallet.get(user.get("PPSN").getAsString()) != null){
-                System.out.println("User already exists");
+            if(wallet.get(user.get("identifier").getAsString()) != null){
+                LOGGER.severe("User has already been created");
                 return ;
             }
 
             if(wallet.get("admin") == null){
-                System.out.println("Admin does not exist, please create an admin");
+                LOGGER.severe("Admin does not exist, please create an admin");
             }
 
             X509Identity adminIdentity = (X509Identity)wallet.get("admin");
             User admin = getAdminUser(adminIdentity);
 
-            RegistrationRequest registrationRequest = new RegistrationRequest(user.get("PPSN").getAsString());
+            RegistrationRequest registrationRequest = new RegistrationRequest(user.get("identifier").getAsString());
             registrationRequest.setAffiliation("org1.department1");
-            registrationRequest.setEnrollmentID(user.get("PPSN").getAsString());
+            registrationRequest.setEnrollmentID(user.get("identifier").getAsString());
             String enrollmentSecret = ca.register(registrationRequest, admin);
-            Enrollment enrollment = ca.enroll(user.get("PPSN").getAsString(), enrollmentSecret);
+            Enrollment enrollment = ca.enroll(user.get("identifier").getAsString(), enrollmentSecret);
             Identity newUser = Identities.newX509Identity("Org1MSP", enrollment);
-            wallet.put(user.get("PPSN").getAsString(), newUser);
-            System.out.println("Succesfully enrolled " + user + " and imported into wallet");
-
+            wallet.put(user.get("identifier").getAsString(), newUser);
+            LOGGER.info("Succesfully enrolled " + user + " and imported into wallet");
+            Authentication authentication = new Authentication();
+            user = authentication.addPublicKey(user);
+            LOGGER.info(user.toString());
+            String response = UserRequests.createUser(user, user.get("identifier").getAsString(), user.get("title").getAsString(), user.get("firstname").getAsString(), user.get("surname").getAsString(), user.get("address").getAsString(), user.get("dob").getAsString(), user.get("gender").getAsString(), user.get("email").getAsString(), user.get("status").getAsString(), user.get("cert").getAsString());
+            LOGGER.info(response);
+            LOGGER.info(PrescriptionRequests.getAllPrescriptions(user));
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.severe(e.toString());
         }
 
     }

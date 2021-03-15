@@ -13,6 +13,11 @@ import org.hyperledger.fabric.gateway.Wallet;
 import org.hyperledger.fabric.gateway.Wallets;
 
 public class Connection {
+    // private static String walletDIR = "../wallets";
+    // private static String connectionDIR = "../connection-org1.yaml";
+    private static String walletDIR = "/opt/tomcat/apache-tomcat-8.5.63/webapps/wallets/";
+    private static String connectionDIR = "/opt/tomcat/apache-tomcat-8.5.63/webapps/app/WEB-INF/classes/connection-org1.yaml";
+
 
     //Needed to run application locally
     static {
@@ -20,9 +25,9 @@ public class Connection {
 	}
     
     public static Network connect(JsonObject user) throws Exception{
-        Path walletpath = Paths.get("../../wallets");
+        Path walletpath = Paths.get(walletDIR);
         Wallet wallet = Wallets.newFileSystemWallet(walletpath);
-        Path networkConfigPath = Paths.get("../../Orgs/Org1/gateway/connection-org1.yaml");
+        Path networkConfigPath = Paths.get(connectionDIR);
         Gateway.Builder builder = Gateway.createBuilder();
         builder.identity(wallet, user.get("identifier").getAsString()).networkConfig(networkConfigPath).discovery(true);
         Gateway gateway = builder.connect();
