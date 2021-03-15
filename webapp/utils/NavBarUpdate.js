@@ -1,13 +1,13 @@
 if(sessionStorage.getItem("ID") == null){
     console.log("Not logged in");
-    window.location.href = "/login/login.html";
+    window.location.replace("http://localhost:8080/app/login/login.html")
 } else {
     console.log("Logged in as " + sessionStorage.getItem("ID"));
     var user = sessionStorage.getItem("ID");
 
     var sideNavButton = document.getElementById("navSideButton");
     sideNavButton.innerHTML = user;
-    sideNavButton.href="../v_details/v_details.html";
+    sideNavButton.href="http://localhost:8080/app/v_details/v_details.html";
     sideNavButton.setAttribute("data-toggle", "dropdown");
 
     var navClass = document.getElementById("navClass");
@@ -18,7 +18,7 @@ if(sessionStorage.getItem("ID") == null){
 
     var myAccount = document.createElement("a");
     myAccount.className = "dropdown-item";
-    myAccount.href = "../v_details/v_details.html";
+    myAccount.href = "http://localhost:8080/app/v_details/v_details.html";
     myAccount.innerHTML = "My details";
 
     var logout = document.createElement("a");
@@ -27,7 +27,7 @@ if(sessionStorage.getItem("ID") == null){
     logout.innerHTML = "Logout";
     logout.onclick = function(){
         sessionStorage.removeItem("ID");
-        logout.href="/login/login.html"
+        logout.href="http://localhost:8080/app/login/login.html"
     }
 
     dropdownMenu.appendChild(myAccount);

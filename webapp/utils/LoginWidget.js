@@ -2,11 +2,11 @@ import Server, { userAuthentication } from './Server.js'
 
 var submitButton = document.getElementById("btnSubmit");
 submitButton.onclick = function(){
-    var PPSN = document.getElementById("PPSN");
+    var identifier = document.getElementById("identifier");
     var DOB = document.getElementById("DOB");
     var errorMsg = document.getElementById("errormsg");
 
-    if(PPSN.value == "" || DOB.value == ""){
+    if(identifier.value == "" || DOB.value == ""){
         submitButton.removeAttribute("data-toggle");
         submitButton.removeAttribute("data-target");
 
@@ -14,9 +14,10 @@ submitButton.onclick = function(){
         errorMsg.innerHTML = "Please fill out the credentials";
     } else {
         errorMsg.innerHTML = ""
-        var loginDetails = {"PPSN" : PPSN.value, "DOB" : DOB.value};
+        var loginDetails = {"identifier" : identifier.value, "DOB" : DOB.value};
         Server.isUser(loginDetails, function(value){
-            if(value == "success"){
+            console.log(value);
+            if(value.msg == "success"){
                 
                 var inputNo = [];
                 while(inputNo.length != 3){
@@ -48,11 +49,12 @@ submitButton.onclick = function(){
                         passcode+= inputs[inputNo[i]].value
                         pattern += inputNo[i];
                     }
-                    var loginCredentials = {"PPSN" : loginDetails.PPSN, "pattern" : pattern, "passcode" : passcode};
+                    var loginCredentials = {"identifier" : loginDetails.identifier, "pattern" : pattern, "passcode" : passcode};
                     Server.userAuthentication(loginCredentials, function(value){
-                        if(value == "success"){
-                            sessionStorage.setItem("ID", loginCredentials.PPSN);
-                            window.location.href = "/";
+                        console.log(value)
+                        if(value.msg == "success"){
+                            sessionStorage.setItem("ID", loginCredentials.identifier);
+                            window.location.href = "http://localhost:8080/app/index.html";
                         } else {
                             var errormsg = document.getElementById("msg");
                             errormsg.style = "color: red"

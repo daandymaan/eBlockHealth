@@ -25,10 +25,12 @@
 //     HTTP.send(json);
 // }
 
+var URL = "http://localhost:8080/app/api/";
+
 function getRequest(url, callback){
     $.ajax(url,{
-        //dataType: 'json,
-        dataType: 'text',
+        dataType: 'json',
+        // dataType: 'text',
         method: 'GET',
         timeout: 500,
         success: function(data,status,xhr){
@@ -42,10 +44,11 @@ function getRequest(url, callback){
 
 function postRequest(url, data, callback){
     $.ajax(url, {
-        //dataType: 'json,
-        dataType: 'text',
+        dataType: 'json',
+        // dataType: 'text',
         method: 'POST',
-        data: data,
+        contentType: "application/json; charset=utf-8",
+        data: JSON.stringify(data),
         success: function (data, status, xhr) {
             if (callback) callback(data);
         },
@@ -81,33 +84,31 @@ export function sendPrescriptionToUser(data, callback){
 }
 
 export function isUser(loginDetails, callback){
-    var url = ""+ loginDetails.PPSN + "/" + loginDetails.DOB;
-    var tempvalue = "success";
-    // this.getRequest(url, function(value){
-    //     if(callback) callback(value);
-    if(callback) callback(tempvalue);
-    // }); 
+    console.log(loginDetails);
+    var url = URL + "userRequestsGateway/userExists";
+    this.postRequest(url, loginDetails, function(value){
+        console.log(value);
+        if(callback) callback(value);
+    });
 }
 
 export function userAuthentication(credentials, callback){
-    var url = "";
-    var tempvalue = "success";
-    // if(credentials.passcode == "333"){
-    //     tempvalue = "success"
-    // }
-    // this.postRequest(url, credentials, function(value){
-    //     if(callback) callback(value);
-    // });
-    callback(tempvalue);
+    var url = URL + "userRequestsGateway/authenticateUser";    
+    console.log(credentials);
+    this.postRequest(url, credentials, function(value){
+        console.log(value);
+        var tempvalue = {"msg" : "success"}
+        if(callback) callback(tempvalue);
+    });
 }
 
-export function getDetailsForUser(ID, callback){
-    var url = ""+ "/" + ID;
-    var details = {"PPSN":"3324784V", "passcode":"7q0z1em9", "DOB" : "01-01-1999", "status" : "C", "address" : "-----BEGIN CERTIFICATE-----\nMIICKTCCAdCgAwIBAgIUVPmv8E5VloDgOsASnNmp5uz0LlkwCgYIKoZIzj0EAwIw\ncDELMAkGA1UEBhMCVVMxFzAVBgNVBAgTDk5vcnRoIENhcm9saW5hMQ8wDQYDVQQH\nEwZEdXJoYW0xGTAXBgNVBAoTEG9yZzEuZXhhbXBsZS5jb20xHDAaBgNVBAMTE2Nh\nLm9yZzEuZXhhbXBsZS5jb20wHhcNMjEwMjEyMTk1NzAwWhcNMjIwMjEyMjAwMjAw\nWjAhMQ8wDQYDVQQLEwZjbGllbnQxDjAMBgNVBAMTBWFkbWluMFkwEwYHKoZIzj0C\nAQYIKoZIzj0DAQcDQgAEFtvm0W4bgpS8+M2woagYbCEAfytE24JqR+kggeaBMFdX\nXSSZ4u7Ng3xaCXqG3twCPcwX/GIjSfBSq6aVQ6KD0qOBljCBkzAOBgNVHQ8BAf8E\nBAMCA6gwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMAwGA1UdEwEB/wQC\nMAAwHQYDVR0OBBYEFCHs0/qQ2+Q+62TA8U3dQV9otHoLMB8GA1UdIwQYMBaAFCb9\nbhmqXrpO4lcIRw71vuwucn8KMBQGA1UdEQQNMAuCCWxvY2FsaG9zdDAKBggqhkjO\nPQQDAgNHADBEAiBtAXWz59nOkKd/Vy1gkdZ5AkYVChiK3Q8eSOZGT6dBaAIgd6eC\ni8IQFtm1J0kGaECHtmpTZMRDjaYlHdHbRY4FONs=\n-----END CERTIFICATE-----\n", "firstname" : "Daniel", "surname": "simons"};
-    // this.getRequest(url, function(value){
-    //     if(callback) callback(value);
-    // })
-    if(callback) callback(details);
+export function getDetailsForUser(request, callback){
+    console.log(request);
+    var url = URL + "userRequestsGateway/getUser"
+    this.postRequest(url, request, function(value){
+        console.log(value);
+        if(callback) callback(value);
+    })
 }
 
 
