@@ -18,6 +18,10 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 export PATH=/home/dan/Docs/fabric-samples/bin:$PATH
 export FABRIC_CFG_PATH=/home/dan/Docs/fabric-samples/config/
 export PATH=$PATH:$FABRIC_CFG_PATH 
+export COMPOSE_PROJECT_NAME=net
+export IMAGE_TAG=latest
+export SYS_CHANNEL=system-channel
+
 
 #Stop network
 ./stop-network.sh
