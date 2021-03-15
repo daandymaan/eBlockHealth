@@ -113,7 +113,7 @@ public class User {
       */
     public static User deserialize(String string){
         JSONObject json = new JSONObject(string);
-        String identifier = json.getString("id");
+        String identifier = json.getString("identifier");
         String title = json.getString("title");
         String firstname = json.getString("firstname");
         String surname = json.getString("surname");
