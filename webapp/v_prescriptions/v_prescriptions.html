@@ -11,6 +11,7 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js"></script>
   <script type="module" src="../utils/PrescriptionWidget.js"></script>
   <script type="module" src="../utils/NavBarUpdate.js"></script>
 </head>
@@ -21,7 +22,7 @@
   <img src="../images/block.png" alt="eBlock health logo" style="width: 40%;">
 </div>
 
-<nav class="navbar navbar-expand-sm bg-primary navbar-light ">
+<nav class="navbar navbar-expand-sm bg-primary navbar-dark ">
   <a class="navbar-brand" href="../index.html">eBlock Health</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
     <span class="navbar-toggler-icon"></span>
@@ -33,6 +34,9 @@
       </li>
       <li class="nav-item">
         <a class="nav-link" href="../v_transactions/v_transactions.html">View transactions</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="../c_prescriptions/c_prescriptions.html">Create prescriptions</a>
       </li>
     </ul>
     <ul class="nav navbar-nav ml-auto">
@@ -64,6 +68,14 @@
       <!-- Modal body -->
       <div class="modal-body" id="modal-body">
         Modal body..
+      </div>
+      <div id="issuer_div">
+        Issuer :  <button id="issuerbtn" type="button" class="btn" data-clipboard-target="#issuer" style="float: right;"><img src="../images/copy.webp" alt="Copy to clipboard" width="5%"></button>
+        <input id="issuer" class="form-control" value="cert">
+      </div>
+      <div id="owner_div">
+        Owner : <button id="ownerbtn" type="button" class="btn" data-clipboard-target="#owner" style="float: right;"><img src="../images/copy.webp" alt="Copy to clipboard" width="5%"></button>
+        <input id="owner" class="form-control" value="cert">
       </div>
 
       <!-- Modal footer -->
