@@ -23,6 +23,7 @@ public class Authentication {
             String passphrase = readPK(user.get("identifier").getAsString());
             if(verifyPK(user, passphrase) == 0){
                 user = addPublicKey(user);
+                user = addStatus(user);
             } else {
                 return null;
             }
@@ -100,5 +101,20 @@ public class Authentication {
             LOGGER.severe(e.toString());
         }
         return user;
+    }
+
+    public JsonObject addStatus(JsonObject user){
+        JsonObject allUserDetails = JsonParser.parseString(UserRequests.getUserByIdentifier(user, user.get("identifier").getAsString())).getAsJsonObject();
+        user.addProperty("status", allUserDetails.get("status").getAsString());
+        return user;
+    }
+
+    public boolean verifySession(JsonObject userInfo){
+        JsonObject correctUserDetails = (JsonObject) JsonParser.parseString(UserRequests.getUserByIdentifier(userInfo, userInfo.get("identifier").getAsString()));
+        if(userInfo.get("cert").getAsString().equals(correctUserDetails.get("cert").getAsString()) && userInfo.get("status").getAsString().equals(correctUserDetails.get("status").getAsString())){
+            return true;
+        } else {
+            return false;
+        }
     }
 }
