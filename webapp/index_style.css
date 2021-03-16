@@ -8,7 +8,6 @@ body{
 
 .navbar li a:hover{
   background-color: #0072ec;
-  color: black;
 }
 
 th {
@@ -84,4 +83,23 @@ th {
 }
 #logoutbtn{
   cursor: pointer;
+}
+#c_prescription_div{
+  width: 75%;
+}
+textarea {
+  margin-top: 2%;
+}
+.errormsg{
+  color: red;
+  text-align: center;
+}
+.modal-body{
+  text-transform: capitalize;
+}
+#issuer_div{
+  margin: 5%;
+}
+#owner_div{
+  margin: 5%;
 }

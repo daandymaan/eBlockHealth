@@ -10,7 +10,6 @@ submitButton.onclick = function(){
         submitButton.removeAttribute("data-toggle");
         submitButton.removeAttribute("data-target");
 
-        errorMsg.style = "color: red"
         errorMsg.innerHTML = "Please fill out the credentials";
     } else {
         errorMsg.innerHTML = ""
@@ -51,9 +50,11 @@ submitButton.onclick = function(){
                     }
                     var loginCredentials = {"identifier" : loginDetails.identifier, "pattern" : pattern, "passcode" : passcode};
                     Server.userAuthentication(loginCredentials, function(value){
-                        console.log(value)
+                        console.log(value);
                         if(value.msg == "success"){
-                            sessionStorage.setItem("ID", loginCredentials.identifier);
+                            localStorage.setItem("ID", value.identifier);
+                            localStorage.setItem("cert", value.cert);
+                            localStorage.setItem("status", value.status);
                             window.location.href = "http://localhost:8080/app/index.html";
                         } else {
                             var errormsg = document.getElementById("msg");
@@ -63,7 +64,6 @@ submitButton.onclick = function(){
                     })
                 }
             } else{
-                errorMsg.style = "color: red"
                 errorMsg.innerHTML = "User not found: Please re enter correct credentials";
             }
         })
