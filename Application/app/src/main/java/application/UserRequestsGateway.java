@@ -121,8 +121,12 @@ public class UserRequestsGateway {
                 msg.addProperty("msg", "fail");
                 return msg.toString();
            }
-           LOGGER.info(verifiedUser.toString());
            msg.addProperty("msg", "success");
+           msg.addProperty("cert", verifiedUser.getAsJsonObject().get("cert").getAsString());
+           msg.addProperty("identifier", verifiedUser.getAsJsonObject().get("identifier").getAsString());
+           msg.addProperty("status", verifiedUser.getAsJsonObject().get("status").getAsString());
+           LOGGER.info(msg.toString());
+
            return msg.toString();
         } catch (Exception e) {
             LOGGER.severe(e.toString());
@@ -130,7 +134,6 @@ public class UserRequestsGateway {
             return msg.toString();
         }
     }
-
 
     @POST
     @Path("/cheesey")
