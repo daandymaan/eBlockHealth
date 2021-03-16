@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>eBlock Health</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../index_style.css">
+  <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script type="module" src="../utils/CreatePrescription.js"></script>
+  <script type="module" src="../utils/NavBarUpdate.js"></script>
+</head>
+<body>
+
+<div class="jumbotron text-center" style="margin-bottom:0">
+  <h1>eBlock Health</h1>
+  <img src="../images/block.png" alt="eBlock health logo" style="width: 40%;">
+</div>
+
+<nav class="navbar navbar-expand-sm bg-primary navbar-dark ">
+  <a class="navbar-brand" href="../index.html">eBlock Health</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="collapsibleNavbar">
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" href="../v_prescriptions/v_prescriptions.html">View prescriptions</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="../v_transactions/v_transactions.html">View transactions</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="../c_prescriptions/c_prescriptions.html">Create prescriptions</a>
+      </li>
+    </ul>
+    <ul class="nav navbar-nav ml-auto">
+      <li id="navClass" class="nav-item dropleft">
+        <a id="navSideButton"class="nav-link" href="../login/login.html"><span class="fas fa-sign-in-alt"></span> Login</a>
+      </li>
+    </ul>
+  </div>  
+</nav>
+
+
+<div class="jumbotron text-center" style="margin-bottom:0">
+    <h1>Create prescriptions</h1>
+</div>
+<br><hr>
+
+<div class="container pt-3" id="c_prescription_div">
+    <form id="c_prescription_form">
+        <select class="form-control custom-select" id="c_prescription_form_product_select">
+            
+        </select>  
+        <textarea class="form-control" rows="5" id="c_prescription_form_product_comment">
+
+        </textarea>
+        <span id="errormsg" class="errormsg"></span><br>
+        <button id="c_prescription_btn" type="button" class="btn btn-success">Create</button>
+    </form>
+</div>
+
+</div>
+
+<div class="jumbotron text-center" style="margin-bottom:0">
+    <p>eBlock Health 2021</p>
+</div>
+
+</body>
+</html>
