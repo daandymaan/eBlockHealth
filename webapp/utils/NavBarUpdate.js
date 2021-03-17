@@ -1,9 +1,9 @@
-if(sessionStorage.getItem("ID") == null){
+if(localStorage.getItem("ID") == null || localStorage.getItem("cert") == null){
     console.log("Not logged in");
     window.location.replace("http://localhost:8080/app/login/login.html")
 } else {
-    console.log("Logged in as " + sessionStorage.getItem("ID"));
-    var user = sessionStorage.getItem("ID");
+    console.log("Logged in as " + localStorage.getItem("ID"));
+    var user = localStorage.getItem("ID");
 
     var sideNavButton = document.getElementById("navSideButton");
     sideNavButton.innerHTML = user;
@@ -26,7 +26,7 @@ if(sessionStorage.getItem("ID") == null){
     logout.id = "logoutbtn";
     logout.innerHTML = "Logout";
     logout.onclick = function(){
-        sessionStorage.removeItem("ID");
+        localStorage.removeItem("ID");
         logout.href="http://localhost:8080/app/login/login.html"
     }
 

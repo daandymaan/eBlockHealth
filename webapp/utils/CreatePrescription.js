@@ -44,7 +44,16 @@ function formatPrescriptionData(prescription){
     prescription.issuer = localStorage.getItem("cert");
     prescription.comment = commentBox.value;
     Server.createPrescription(prescription, function(value){
-        console.log(value);
+        var toastBody = document.getElementById("toast_notification_body");
+        var toastHeader = document.getElementById("toast_notification_header");
+        if(value.pID != null){
+            toastHeader.innerHTML = "Prescription created successfully";
+            toastBody.innerHTML = value.pID +" created succesfully";
+        } else {
+            toastHeader.innerHTML = "Prescription was not created";
+            toastBody.innerHTML = "The prescription was not created"
+        }
+        $('#toast_notifcation').toast('show');
     })
 }
 

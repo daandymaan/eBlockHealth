@@ -12,9 +12,11 @@ Server.getPrescriptionsForUser( function(value){
     
     var widgets = [];
 
-    data.forEach(function(widgetData){
-        widgets.push(widgetCreation(widgetData));
-    })
+    if(data.length > 0){
+        data.forEach(function(widgetData){
+            widgets.push(widgetCreation(widgetData));
+        });
+    }
 })
 
 
@@ -114,7 +116,15 @@ function transferPrescription(data){
             transferData.owner = data.owner;
             transferData.recipient = inputBox.value;
             Server.sendPrescriptionToUser(transferData, function(value){
-                console.log(value);
+                var toastBody = document.getElementById("toast_notification_body");
+                var toastHeader = document.getElementById("toast_notification_header");
+                if(value.owner == transferData.recipient){
+                    toastHeader.innerHTML = "Prescription sent successfully";
+                    toastBody.innerHTML = value.pID +" sent succesfully";
+                } else {
+                    toastHeader.innerHTML = "Prescription was not sent";
+                }
+                $('#toast_notifcation').toast('show');
             });
         }
     }
