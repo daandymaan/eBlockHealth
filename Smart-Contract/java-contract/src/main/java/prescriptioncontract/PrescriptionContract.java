@@ -1,6 +1,7 @@
 package prescriptioncontract;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
@@ -45,7 +46,7 @@ public final class PrescriptionContract implements ContractInterface {
      * @return The ID for the prescription
      */
     public String generatePID(String date, String issuer, String product, String productID){
-        return Integer.toString(Objects.hash(date, issuer, product, productID));
+        return Integer.toString( Math.abs(Objects.hash(date, issuer, product, productID))); 
     }
 
     /**
@@ -137,15 +138,16 @@ public final class PrescriptionContract implements ContractInterface {
     * @return A string containing the updated prescription
     */
     @Transaction(intent = Transaction.TYPE.SUBMIT)
-    public String transferPrescription(final Context ctx, final String PID, final String newOwner) {
+    public String transferPrescription(final Context ctx, final String PID, final String owner, final String newOwner) {
         ChaincodeStub stub = ctx.getStub();
         String JSON = stub.getStringState(PID);
         if (JSON != null ) {
             Prescription prescription = Prescription.deserialize(JSON);
-
-            prescription.setOwner(newOwner);
-            JSON = genson.serialize(prescription);
-            stub.putStringState(PID, JSON);
+            if(owner.equals(prescription.getOwner())){
+                prescription.setOwner(newOwner);
+                JSON = genson.serialize(prescription);
+                stub.putStringState(PID, JSON);
+            }
         }
         return JSON;
     }
@@ -179,9 +181,13 @@ public final class PrescriptionContract implements ContractInterface {
     @Transaction(intent = Transaction.TYPE.EVALUATE)
     public String getHistoryForKey(final Context ctx, String PID){
         ChaincodeStub stub = ctx.getStub();
-        List<Prescription> queryResults = new ArrayList<Prescription>();
-        QueryResultsIterator<KeyModification> results =  stub.getHistoryForKey(PID);
-        return "";
+        ArrayList<String> results  = new ArrayList<String>();
+        QueryResultsIterator<KeyModification> history =  stub.getHistoryForKey(PID);
+        Iterator<KeyModification> iter = history.iterator();
+        while(iter.hasNext()){
+            results.add(iter.next().getStringValue());
+        }
+        return results.toString();
     }
 
     /**
