@@ -7,9 +7,6 @@ submitButton.onclick = function(){
     var errorMsg = document.getElementById("errormsg");
 
     if(identifier.value == "" || DOB.value == ""){
-        submitButton.removeAttribute("data-toggle");
-        submitButton.removeAttribute("data-target");
-
         errorMsg.innerHTML = "Please fill out the credentials";
     } else {
         errorMsg.innerHTML = ""
@@ -37,8 +34,7 @@ submitButton.onclick = function(){
                     inputs[inputNo[i]].value = "";
                 }
 
-                submitButton.setAttribute("data-toggle", "modal");
-                submitButton.setAttribute("data-target", "#modalView");
+                $('#modalView').modal('show')
 
                 var verifyButton = document.getElementById("verifyButton");
                 verifyButton.onclick = function(){
