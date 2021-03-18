@@ -10,6 +10,7 @@ import java.util.logging.Logger;
 import org.hyperledger.fabric.gateway.Wallet;
 import org.hyperledger.fabric.gateway.Wallets;
 
+import com.google.common.base.CharMatcher;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -93,6 +94,7 @@ public class Authentication {
             JsonObject usr = (JsonObject) obj;
             JsonObject credentials = usr.getAsJsonObject("credentials");
             String cert = credentials.get("certificate").getAsString();
+            cert = CharMatcher.breakingWhitespace().removeFrom(cert);
             user.addProperty("cert", cert);
 
         } catch (FileNotFoundException e) {

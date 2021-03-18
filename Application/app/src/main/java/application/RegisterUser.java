@@ -106,10 +106,8 @@ public class RegisterUser {
             LOGGER.info("Succesfully enrolled " + user + " and imported into wallet");
             Authentication authentication = new Authentication();
             user = authentication.addPublicKey(user);
-            LOGGER.info(user.toString());
             String response = UserRequests.createUser(user, user.get("identifier").getAsString(), user.get("title").getAsString(), user.get("firstname").getAsString(), user.get("surname").getAsString(), user.get("address").getAsString(), user.get("dob").getAsString(), user.get("gender").getAsString(), user.get("email").getAsString(), user.get("status").getAsString(), user.get("cert").getAsString());
             LOGGER.info(response);
-            LOGGER.info(PrescriptionRequests.getAllPrescriptions(user));
         } catch (Exception e) {
             LOGGER.severe(e.toString());
         }

@@ -19,8 +19,9 @@ public class PrescriptionRequestsGateway {
     @Path("/getAllPrescriptions")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public String getAllPrescriptions(String user){
-        JsonObject userInfo = (JsonObject) JsonParser.parseString(user).getAsJsonObject();
+    public String getAllPrescriptions(String request){
+        JsonObject requestJson = (JsonObject) JsonParser.parseString(request).getAsJsonObject();
+        JsonObject userInfo = requestJson.get("user").getAsJsonObject();
         return PrescriptionRequests.getAllPrescriptions(userInfo);
     }
 
@@ -28,8 +29,9 @@ public class PrescriptionRequestsGateway {
     @Path("/getPrescriptionsForUser")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public String getPrescriptionsForUser(String user){
-        JsonObject userInfo = (JsonObject) JsonParser.parseString(user).getAsJsonObject();
+    public String getPrescriptionsForUser(String request){
+        JsonObject requestJson = (JsonObject) JsonParser.parseString(request).getAsJsonObject();
+        JsonObject userInfo = requestJson.get("user").getAsJsonObject();
         return PrescriptionRequests.getAllPrescriptionsForUser(userInfo);
     }
 
@@ -109,7 +111,8 @@ public class PrescriptionRequestsGateway {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public String getPrescriptionHistory(String request){
-        JsonObject userInfo = JsonParser.parseString(request).getAsJsonObject();
+        JsonObject requestJson = (JsonObject) JsonParser.parseString(request).getAsJsonObject();
+        JsonObject userInfo = requestJson.get("user").getAsJsonObject();
         return PrescriptionRequests.getPrescriptionHistoryForUser(userInfo);
     }
 
