@@ -12,9 +12,7 @@ submitButton.onclick = function(){
         errorMsg.innerHTML = ""
         var loginDetails = {"identifier" : identifier.value, "DOB" : DOB.value};
         Server.isUser(loginDetails, function(value){
-            console.log(value);
             if(value.msg == "success"){
-                
                 var inputNo = [];
                 while(inputNo.length != 3){
                     var no = ("" + Math.random()).substring(2,3)% 8;
@@ -48,9 +46,6 @@ submitButton.onclick = function(){
                     Server.userAuthentication(loginCredentials, function(value){
                         console.log(value);
                         if(value.msg == "success"){
-                            localStorage.setItem("ID", value.identifier);
-                            localStorage.setItem("cert", value.cert);
-                            localStorage.setItem("status", value.status);
                             window.location.href = "http://localhost:8080/app/index.html";
                         } else {
                             var errormsg = document.getElementById("msg");

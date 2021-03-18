@@ -1,9 +1,7 @@
 import Server from "./Server.js";
 
 new ClipboardJS('.btn');
-var identifier = {"identifier" : localStorage.getItem("ID")};
-var request = {"user" : identifier, "identifier" : localStorage.getItem("ID")}
-Server.getDetailsForUser(request, function(value){
+Server.getDetailsForUser(function(value){
     console.log("value ", value);
     var ppsn = document.getElementById("PPSNNO");
     ppsn.innerHTML = value.identifier;
