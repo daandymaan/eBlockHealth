@@ -22,6 +22,7 @@ export COMPOSE_PROJECT_NAME=net
 export IMAGE_TAG=latest
 export SYS_CHANNEL=system-channel
 
+$CATALINA_HOME/bin/shutdown.sh
 #Go to network directory
 cd /home/dan/Docs/fabric-samples/test-network
 
@@ -34,6 +35,12 @@ docker kill logspout || true
 #Delete wallets folder 
 if [ -d "/home/dan/Docs/BlockchainPrescribing/wallets" ]; then 
     rm -r /home/dan/Docs/BlockchainPrescribing/wallets
+    #docker rm $(docker ps -a -q)
+fi 
+
+#Delete wallets folder 
+if [ -d "/opt/tomcat/apache-tomcat-8.5.63/webapps/wallets" ]; then 
+    rm -r /opt/tomcat/apache-tomcat-8.5.63/webapps/wallets
     #docker rm $(docker ps -a -q)
 fi 
 
