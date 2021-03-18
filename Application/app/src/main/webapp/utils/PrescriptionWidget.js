@@ -36,20 +36,18 @@ function widgetCreation(data){
     openButton.className += "btn btn-outline-info"
     openButton.onclick = function(){
         viewPrescriptionModal(data);
+        $('#modalView').modal('show')
+
     };
     openButton.type = "button";
-    openButton.setAttribute("data-toggle", "modal");
-    openButton.setAttribute("data-target", "#modalView");
 
     var sendButton = document.createElement("button");
     sendButton.className += "btn btn-outline-success"
     sendButton.onclick = function(){
-        console.log("Transfer prescription");
         transferPrescription(data);
+        $('#transferView').modal('show')
     };
     sendButton.type = "button";
-    sendButton.setAttribute("data-toggle", "modal");
-    sendButton.setAttribute("data-target", "#modalView");
 
     pIDH1.textContent = data.pID;
     DATEH2.textContent = data.date;
@@ -69,10 +67,6 @@ function widgetCreation(data){
 
 
 function viewPrescriptionModal(data){
-    if(document.getElementById("sButton") != null){
-        var div = document.getElementById("modal-footer")
-        div.removeChild(document.getElementById("sButton"));
-    }
     var contentString = "";
     var modalTitle = document.getElementById("modal-title");
     modalTitle.innerHTML = data.pID;
@@ -99,7 +93,7 @@ function viewPrescriptionModal(data){
 function transferPrescription(data){
     //Button creation
     if(document.getElementById("sButton") != null){
-        var div = document.getElementById("modal-footer")
+        var div = document.getElementById("transferView-footer")
         div.removeChild(document.getElementById("sButton"));
     }
     var submitButton = document.createElement("button");
@@ -111,7 +105,6 @@ function transferPrescription(data){
         var transferData = {"pID" : undefined, "owner" : undefined, "recipient" : undefined};
 
         if(inputBox.value != ""){
-            console.log(inputBox.value);
             transferData.pID = data.pID;
             transferData.owner = data.owner;
             transferData.recipient = inputBox.value;
@@ -125,17 +118,20 @@ function transferPrescription(data){
                     toastHeader.innerHTML = "Prescription was not sent";
                 }
                 $('#toast_notifcation').toast('show');
+                setTimeout(function(){
+                    window.location.reload(1);
+                }, 2000);
             });
         }
     }
 
-    var modalFooter = document.getElementById("modal-footer");
+    var modalFooter = document.getElementById("transferView-footer");
     modalFooter.appendChild(submitButton);
 
-    var modalTitle = document.getElementById("modal-title");
+    var modalTitle = document.getElementById("transferView-title");
     modalTitle.innerHTML = data.pID;
 
-    var modalContent = document.getElementById("modal-body");
+    var modalContent = document.getElementById("transferView-body");
     modalContent.innerHTML = "Please enter recipients address <br><br>";
 
     var inputBox = document.createElement("input");
