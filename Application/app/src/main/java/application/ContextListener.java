@@ -1,13 +1,7 @@
 package application;
 
-import java.io.BufferedWriter;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
@@ -59,6 +53,19 @@ public class ContextListener extends Application implements ServletContextListen
         user1.addProperty("email", "sanieldimons@gmail.com");
         user1.addProperty("status", "M");
         users.add(user1);
+
+        JsonObject user2 = new JsonObject();
+        user2.addProperty("identifier", "7345216J");
+        user2.addProperty("title", "Mr");
+        user2.addProperty("firstname", "Greg");
+        user2.addProperty("surname", "Simons");
+        user2.addProperty("address", "52 Strand Street Skerries Dublin");
+        user2.addProperty("dob", "10-05-1969");
+        user2.addProperty("gender", "M");
+        user2.addProperty("email", "");
+        user2.addProperty("status", "P");
+        users.add(user2);
+
         return users;
     }   
 }
