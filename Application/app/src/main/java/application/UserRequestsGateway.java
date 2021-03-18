@@ -30,14 +30,9 @@ public class UserRequestsGateway {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public String getUser(String request){
-        LOGGER.info(request);
         JsonObject requestJson = (JsonObject) JsonParser.parseString(request).getAsJsonObject();
-        LOGGER.info(requestJson.toString());
         JsonObject userInfo = requestJson.get("user").getAsJsonObject();
-        LOGGER.info(userInfo.toString());
         String identifier = requestJson.get("identifier").getAsString();
-        LOGGER.info(userInfo.toString());
-        LOGGER.info(identifier);
         return UserRequests.getUserByIdentifier(userInfo, identifier);
     }
 
@@ -103,36 +98,6 @@ public class UserRequestsGateway {
             msg.addProperty("msg", "fail");
         }
         return msg.toString();
-    }
-
-    @POST
-    @Path("/authenticateUser")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public String authenticateUser(String user){
-        LOGGER.info(user);
-        JsonObject userInfo = (JsonObject) JsonParser.parseString(user).getAsJsonObject();
-        Authentication authentication = new Authentication();
-        JsonObject msg = new JsonObject();
-        try {
-           JsonObject verifiedUser =  authentication.authenticateUser(userInfo);
-           if(verifiedUser == null){
-               LOGGER.info("Incorrect credentials");
-                msg.addProperty("msg", "fail");
-                return msg.toString();
-           }
-           msg.addProperty("msg", "success");
-           msg.addProperty("cert", verifiedUser.getAsJsonObject().get("cert").getAsString());
-           msg.addProperty("identifier", verifiedUser.getAsJsonObject().get("identifier").getAsString());
-           msg.addProperty("status", verifiedUser.getAsJsonObject().get("status").getAsString());
-           LOGGER.info(msg.toString());
-
-           return msg.toString();
-        } catch (Exception e) {
-            LOGGER.severe(e.toString());
-            msg.addProperty("msg", "fail");
-            return msg.toString();
-        }
     }
 
     @POST
