@@ -1,41 +1,8 @@
 import Server from './Server.js'
 Server.getTransactionsFromUser( function(data){
-    var sampleList = [{"PID" : "389201303", "Owner": "admin", "Issuer":"GP"},
-                      {"PID" : "00005006", "Owner": "dan", "Issuer":"GP"}];
-
-
     data.forEach(function(prescription){
         widgetCreation(prescription);
     });
-
-    //Create table 
-    // var table = document.createElement("table");
-    // table.className += "table";
-    // table.className += " table-hover";
-    // table.className += " table-striped";
-    // table.className += " table-active";
-    // var columnCount = Object.keys(tableData[0]).length;
-
-    //  //Add the header row.
-    //  var row = table.insertRow(-1);
-    //  for (var i = 0; i < columnCount; i++) {
-    //     var headerCell = document.createElement("TH");
-    //     headerCell.innerHTML = Object.keys(tableData[0])[i];
-    //     row.appendChild(headerCell);
-    // }
-
-    // for(var i = 0; i < tableData.length; i++){
-    //     row = table.insertRow(-1);
-    //     for(var j = 0; j < columnCount; j++){
-    //         var cell = row.insertCell(-1);
-    //         console.log(tableData[i][Object.keys(tableData[0])[j]]);
-    //         cell.innerHTML = tableData[i][Object.keys(tableData[0])[j]]
-    //     }
-    // }
-    //  var dvTable = document.getElementById("table_div");
-    //  dvTable.innerHTML = "";
-    //  dvTable.appendChild(table);
-
 });
 
 function widgetCreation(data){
@@ -52,10 +19,8 @@ function widgetCreation(data){
     viewHistory.onclick = function(){
         generatePagination(data);
         if(data.length > 1){
-            console.log("More than 1");
             loadOwnerTimeline(data[0].owner, data[1].owner);
         } else {
-            console.log("Less than 1");
             loadOwnerTimeline(data[0].owner);
         }
         loadTableData(data[0]);
@@ -124,7 +89,6 @@ function loadTableData(tableData){
 
      var dvTable = document.getElementById("prescription_history_table");
      dvTable.innerHTML = "";
-     console.log(table);
      dvTable.appendChild(table);
 }
 
