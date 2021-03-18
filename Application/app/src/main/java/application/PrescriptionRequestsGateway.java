@@ -1,5 +1,7 @@
 package application;
 
+import java.util.logging.Logger;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -11,6 +13,7 @@ import com.google.gson.JsonParser;
 
 @Path("/prescriptionRequests")
 public class PrescriptionRequestsGateway {
+    private static final Logger LOGGER = Logging.getInstance();
 
     @POST
     @Path("/getAllPrescriptions")
@@ -50,8 +53,9 @@ public class PrescriptionRequestsGateway {
         JsonObject requestJson = (JsonObject) JsonParser.parseString(request).getAsJsonObject();
         JsonObject userInfo = requestJson.get("user").getAsJsonObject();
         String PID = requestJson.get("pID").getAsString();
-        String newOwner = requestJson.get("newOwner").getAsString();
-        return PrescriptionRequests.transferPrescription(userInfo, PID, newOwner);
+        String owner = requestJson.get("owner").getAsString();
+        String newOwner = requestJson.get("recipient").getAsString();
+        return PrescriptionRequests.transferPrescription(userInfo, PID, owner, newOwner);
     }
 
     @POST
@@ -83,6 +87,7 @@ public class PrescriptionRequestsGateway {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public String createPrescription(String request){
+        LOGGER.info(request);
         JsonObject requestJson = (JsonObject) JsonParser.parseString(request).getAsJsonObject();
         JsonObject userInfo = requestJson.get("user").getAsJsonObject();
         String date = requestJson.get("date").getAsString();
@@ -97,6 +102,15 @@ public class PrescriptionRequestsGateway {
         String instruction = requestJson.get("instruction").getAsString();
         String comment = requestJson.get("comment").getAsString();
         return PrescriptionRequests.createPrescription(userInfo, date, issuer, product, productID, productPackage, quantity, doseStrength, doseType, doseQuantity, instruction, comment);
+    }
+
+    @POST
+    @Path("/getPrescriptionHistory")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public String getPrescriptionHistory(String request){
+        JsonObject userInfo = JsonParser.parseString(request).getAsJsonObject();
+        return PrescriptionRequests.getPrescriptionHistoryForUser(userInfo);
     }
 
 }

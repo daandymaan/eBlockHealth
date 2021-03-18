@@ -21,7 +21,7 @@
   <img src="../images/block.png" alt="eBlock health logo" style="width: 40%;">
 </div>
 
-<nav class="navbar navbar-expand-sm bg-primary navbar-light ">
+<nav class="navbar navbar-expand-sm bg-primary navbar-dark ">
   <a class="navbar-brand" href="../index.html">eBlock Health</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
     <span class="navbar-toggler-icon"></span>
@@ -34,6 +34,9 @@
       <li class="nav-item">
         <a class="nav-link" href="../v_transactions/v_transactions.html">View transactions</a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" href="../c_prescriptions/c_prescriptions.html">Create prescriptions</a>
+      </li>
     </ul>
     <ul class="nav navbar-nav ml-auto">
       <li id="navClass" class="nav-item dropleft">
@@ -44,12 +47,22 @@
 </nav>
 
 <div class="jumbotron text-center" style="margin-bottom:0">
-    <h1>Previous Transactions</h1>
+    <h1>Prescription History</h1>
 </div>
 <br><hr>
 <!-- Table created using createTable.js widget -->
-<div id="table_div" class="container">
+<div id="prescription_widget" class="container">
 </div>
+
+<div id="prescription_history_table_div">
+  <div class="container" id="pagination_history"></div>
+  <span data-toggle="owner_tooltip" data-placement="top" id="owner_cert"></span> 
+  <span data-toggle="previousOwner_tooltip" data-placement="top" id="previousOwner_cert"></span>
+  <div id="prescription_history_table" class="table-responsive" > 
+
+  </div>
+</div>
+
 <div class="jumbotron text-center" style="margin-bottom:0">
     <p>eBlock Health 2021</p>
 </div>

@@ -33,7 +33,13 @@ function postRequest(url, data, callback){
     })
 }
 
-export function getTransactionsFromUser(ID, callback){
+export function getTransactionsFromUser(callback){
+    var url = URL + "prescriptionRequests/getPrescriptionHistory";
+    var ID = getIdentity();
+    this.postRequest(url, ID, function(value){
+        console.log(value);
+        if (callback) callback(value);
+    })
 
 }
 
@@ -47,11 +53,12 @@ export function getPrescriptionsForUser(callback){
     });
 }
 
-export function sendPrescriptionToUser(data, callback){
+export function sendPrescriptionToUser(request, callback){
     var url = URL + "prescriptionRequests/updatePrescriptionOwner";
-    var ID = getIdentity();
-    var request = {"user": ID, data}
-    this.postRequest(url, data, function(value){
+    request.user = getIdentity();
+    console.log(request);
+    this.postRequest(url, request, function(value){
+        console.log(value);
         if(callback) callback(value);
     });
 }

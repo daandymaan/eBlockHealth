@@ -1,5 +1,7 @@
 package application;
 
+import java.util.logging.Logger;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -9,18 +11,18 @@ import org.hyperledger.fabric.gateway.Contract;
 
 public class PrescriptionRequests {
 
+    private static final Logger LOGGER = Logging.getInstance();
     // PrescriptionContext ctx, String date, String issuer, String product, String
     // productID, String productPackage, String quantity, String doseStrength,
     // String doseType, String doseQuantity, String instruction, String comment
     public static String createPrescription(JsonObject user, String date, String issuer, String product, String productID, String productPackage,
     String quantity, String doseStrength, String doseType, String doseQuantity, String instruction, String comment) {
-        System.out.println("Creating prescription");
         try {
             Contract contract = Connection.getContract(user, "pc");
             byte[] result = contract.submitTransaction("issue", date, issuer, product, productID, productPackage, quantity, doseStrength, doseType, doseQuantity, instruction, comment );
             return new String(result);
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.severe(e.toString());
             JsonObject errorResponse = new JsonObject();
             errorResponse.addProperty("msg", "Prescriptions could not be created");
             return errorResponse.toString();
@@ -44,12 +46,12 @@ public class PrescriptionRequests {
     }
 
     public static String getAllPrescriptionsForUser(JsonObject user){
-        System.out.println("Get all prescriptions for user");
         JsonArray userPrescriptions = new JsonArray();
         JsonArray JSONresult = JsonParser.parseString(PrescriptionRequests.getAllPrescriptions(user)).getAsJsonArray();
 
         for (JsonElement jsonElement : JSONresult) {
-            if(user.get("identifier").getAsString().equals(jsonElement.getAsJsonObject().get("owner").getAsString())){
+            LOGGER.info(user.get("cert").getAsString() + " == " + jsonElement.getAsJsonObject().get("owner").getAsString());
+            if(user.get("cert").getAsString().equals(jsonElement.getAsJsonObject().get("owner").getAsString())){
                 userPrescriptions.add(jsonElement);
             }
         }
@@ -59,15 +61,15 @@ public class PrescriptionRequests {
             errorMsg.addProperty("msg", "No prescriptions found for user");
             return errorMsg.toString();
         }
+        LOGGER.info(userPrescriptions.toString());
         return userPrescriptions.toString();
     }
 
-    public static String transferPrescription(JsonObject user, String PID, String newOwner) {
-        System.out.println("Transfer prescription");
+    public static String transferPrescription(JsonObject user, String PID, String owner, String newOwner) {
         byte[] result;
         try {
             Contract contract = Connection.getContract(user, "pc");
-            result = contract.submitTransaction("transferPrescription", PID, newOwner);
+            result = contract.submitTransaction("transferPrescription", PID, owner, newOwner);
             return new String(result);
 
         } catch (Exception e) {
@@ -111,5 +113,35 @@ public class PrescriptionRequests {
             return errorResponse.toString();
         }
 
+    }
+
+    public static String getHistoryForKey(JsonObject user, String PID){
+        byte[] result;
+        Contract contract;
+        try {
+            contract = Connection.getContract(user, "pc");
+            result = contract.evaluateTransaction("getHistoryForKey", PID);
+            return new String(result);
+        } catch (Exception e) {
+            LOGGER.severe(e.toString());
+            JsonObject errorResponse = new JsonObject();
+            errorResponse.addProperty("msg", "History could not be gathered");
+            return errorResponse.toString();
+        }
+    }
+
+    public static String getPrescriptionHistoryForUser(JsonObject user){
+        JsonArray prescriptions = JsonParser.parseString(getAllPrescriptionsForUser(user)).getAsJsonArray();
+        JsonArray prescriptionsHistory = new JsonArray();
+        for (JsonElement p : prescriptions) {
+            prescriptionsHistory.add(JsonParser.parseString(getHistoryForKey(user, p.getAsJsonObject().get("pID").getAsString())).getAsJsonArray());
+        }
+        if(prescriptionsHistory.size() == 0){
+            JsonObject errorMsg = new JsonObject();
+            errorMsg.addProperty("msg", "No prescriptions found for user");
+            return errorMsg.toString();
+        }
+        LOGGER.info(prescriptionsHistory.toString());
+        return prescriptionsHistory.toString();
     }
 }

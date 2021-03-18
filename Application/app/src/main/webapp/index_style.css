@@ -103,3 +103,12 @@ textarea {
 #owner_div{
   margin: 5%;
 }
+#owner_cert{
+  width: 45%;
+  float: left;
+}
+#previousOwner_cert{
+  width: 45%;
+  text-align: right;
+  float: right;
+}
