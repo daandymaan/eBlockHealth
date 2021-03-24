@@ -1,4 +1,4 @@
-package application;
+package application.service;
 
 import java.util.logging.Logger;
 
@@ -11,8 +11,11 @@ import javax.ws.rs.core.MediaType;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import application.log.Logging;
+import application.requests.PrescriptionRequests;
+
 @Path("/prescriptionRequests")
-public class PrescriptionRequestsGateway {
+public class PrescriptionService {
     private static final Logger LOGGER = Logging.getInstance();
 
     @POST

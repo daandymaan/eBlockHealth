@@ -1,9 +1,11 @@
-package application;
+package application.log;
 
 import java.io.IOException;
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
+
+import application.ContextListener;
 
 public class Logging {
     private static Logging single_instance = null;

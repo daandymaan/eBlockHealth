@@ -1,4 +1,4 @@
-package application.SessionFunctionality;
+package application.sessionFunctionality;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -14,8 +14,8 @@ import javax.servlet.http.HttpSession;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import application.Authentication;
-import application.Logging;
+import application.requests.Authentication;
+import application.log.Logging;
 
 @WebServlet("/userRequestsGateway/authenticateUser")
 public class SessionGeneration extends HttpServlet{

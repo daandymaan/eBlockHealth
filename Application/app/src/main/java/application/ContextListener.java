@@ -14,6 +14,9 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
+import application.log.Logging;
+import application.requests.RegisterUser;
+
 @WebListener("application context listener")
 @ApplicationPath("/api")
 public class ContextListener extends Application implements ServletContextListener  {

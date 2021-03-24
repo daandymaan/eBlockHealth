@@ -1,6 +1,5 @@
-package application;
+package application.service;
 
-import java.io.IOException;
 import java.util.logging.Logger;
 
 import javax.ws.rs.Consumes;
@@ -12,8 +11,13 @@ import javax.ws.rs.core.MediaType;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import application.log.Logging;
+import application.requests.Authentication;
+import application.requests.UserRequests;
+
+
 @Path("/userRequestsGateway")
-public class UserRequestsGateway {
+public class UserService {
     private static final Logger LOGGER = Logging.getInstance();
 
     @POST
@@ -88,27 +92,15 @@ public class UserRequestsGateway {
         Authentication authentication = new Authentication();
         JsonObject msg = new JsonObject();
         try {
-            if(authentication.userExists(userInfo).equals("success")){
+            if(authentication.userExists(userInfo)){
                 msg.addProperty("msg", "success");
             } else {
                 msg.addProperty("msg", "fail");
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             LOGGER.severe(e.toString());
             msg.addProperty("msg", "fail");
         }
         return msg.toString();
     }
-
-    @POST
-    @Path("/cheesey")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public String cheesey(String request){
-        // JsonObject requestJson = (JsonObject) JsonParser.parseString(request).getAsJsonObject();
-        JsonObject json = new JsonObject();
-        json.addProperty("msg", "cheesey");
-        return json.toString();
-    }
-
 }

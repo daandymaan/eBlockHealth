@@ -1,4 +1,4 @@
-package application.SessionFunctionality;
+package application.sessionFunctionality;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -12,7 +12,7 @@ import javax.servlet.http.HttpSession;
 
 import com.google.gson.JsonObject;
 
-import application.Logging;
+import application.log.Logging;
 
 @WebServlet("/userRequestsGateway/verifySession")
 public class SessionRetrieval extends HttpServlet{

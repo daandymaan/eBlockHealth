@@ -1,4 +1,4 @@
-package application;
+package application.requests;
 
 import java.util.logging.Logger;
 
@@ -8,6 +8,9 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import org.hyperledger.fabric.gateway.Contract;
+
+import application.log.Logging;
+
 
 public class PrescriptionRequests {
 
