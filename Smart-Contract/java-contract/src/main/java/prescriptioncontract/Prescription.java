@@ -182,7 +182,7 @@ public class Prescription {
         return jsonStr.getBytes(UTF_8);
      }
  
-     //Without state
+     //Prescription contructor class 
      public Prescription(String PID, String date, String issuer, String owner, String product, String productID,
              String productPackage, String quantity, String doseStrength, String doseType, String doseQuantity,
              String instruction, String comment, String status) {
@@ -203,6 +203,7 @@ public class Prescription {
          this.status = status;
      }
  
+     //Empty contructor class 
      public Prescription() {
 
 	}
