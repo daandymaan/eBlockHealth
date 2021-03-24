@@ -15,11 +15,20 @@ import application.log.Logging;
 import application.requests.Authentication;
 import application.requests.UserRequests;
 
-
+/**
+ * Class that contains API URI for user requests
+ */
+ //Default path
 @Path("/userRequestsGateway")
 public class UserService {
     private static final Logger LOGGER = Logging.getInstance();
 
+    /**
+     * POST request
+     * Gets all users stored on the ledger
+     * @param String user (JsonObject)
+     * @return MediaType.APPLICATION_JSON (JsonObject.toString())
+     */
     @POST
     @Path("/getAllUsers")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -29,6 +38,12 @@ public class UserService {
         return UserRequests.getUsers(userInfo);
     }
 
+    /**
+     * POST request
+     * Gets a user's detail by identifier
+     * @param String request (JsonObject)
+     * @return MediaType.APPLICATION_JSON (JsonObject.toString())
+     */
     @POST
     @Path("/getUser")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -40,6 +55,12 @@ public class UserService {
         return UserRequests.getUserByIdentifier(userInfo, identifier);
     }
 
+    /**
+     * POST request
+     * Updates a user's details 
+     * @param String request (JsonObject)
+     * @return MediaType.APPLICATION_JSON (JsonObject.toString())
+     */
     @POST
     @Path("/updateUserDetails")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -61,6 +82,12 @@ public class UserService {
         return UserRequests.updateUser(userInfo, identifier, title, firstname, surname, address, dob, gender, email, status, cert);
     }
 
+    /**
+     * POST request
+     * Creates a user by HTTP request
+     * @param String request (JsonObject)
+     * @return MediaType.APPLICATION_JSON (JsonObject.toString())
+     */
     @POST
     @Path("/createUser")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -82,6 +109,12 @@ public class UserService {
         return UserRequests.createUser(userInfo, identifier, title, firstname, surname, address, dob, gender, email, status, cert);
     }
 
+    /**
+     * POST request
+     * Detects if a user exists by wallet address
+     * @param String request (JsonObject)
+     * @return MediaType.APPLICATION_JSON (JsonObject.toString())
+     */
     @POST
     @Path("/userExists")
     @Consumes(MediaType.APPLICATION_JSON)

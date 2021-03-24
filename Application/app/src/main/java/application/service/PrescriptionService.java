@@ -14,10 +14,20 @@ import com.google.gson.JsonParser;
 import application.log.Logging;
 import application.requests.PrescriptionRequests;
 
+/**
+ * Class that contains API URI for prescription requests
+ */
+ //Default path
 @Path("/prescriptionRequests")
 public class PrescriptionService {
     private static final Logger LOGGER = Logging.getInstance();
 
+    /**
+     * POST request
+     * Gets all prescription entities on the ledger
+     * @param String request(JsonObject)
+     * @return MediaType.APPLICATION_JSON (JsonObject.toString())
+     */
     @POST
     @Path("/getAllPrescriptions")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -28,6 +38,12 @@ public class PrescriptionService {
         return PrescriptionRequests.getAllPrescriptions(userInfo);
     }
 
+    /**
+     * POST request
+     * Gets all prescriptions for a user from the ledger
+     * @param String request(JsonObject)
+     * @return MediaType.APPLICATION_JSON (JsonObject.toString())
+     */
     @POST
     @Path("/getPrescriptionsForUser")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -38,6 +54,12 @@ public class PrescriptionService {
         return PrescriptionRequests.getAllPrescriptionsForUser(userInfo);
     }
 
+    /**
+     * POST request
+     * Updates prescription status 
+     * @param String request(JsonObject)
+     * @return MediaType.APPLICATION_JSON (JsonObject.toString())
+     */
     @POST
     @Path("/updatePrescriptionStatus")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -50,6 +72,12 @@ public class PrescriptionService {
         return PrescriptionRequests.updateStatus(userInfo, PID, status);
     }
 
+    /**
+     * POST request
+     * Updates owner of prescription (Transfer)
+     * @param String request(JsonObject)
+     * @return MediaType.APPLICATION_JSON (JsonObject.toString())
+     */
     @POST
     @Path("/updatePrescriptionOwner")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -63,6 +91,12 @@ public class PrescriptionService {
         return PrescriptionRequests.transferPrescription(userInfo, PID, owner, newOwner);
     }
 
+    /**
+     * POST request
+     * Updates the prescription (All details)
+     * @param String request(JsonObject)
+     * @return MediaType.APPLICATION_JSON (JsonObject.toString())
+     */
     @POST
     @Path("/updatePrescription")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -87,6 +121,12 @@ public class PrescriptionService {
         return PrescriptionRequests.updatePrescription(userInfo, PID, date, issuer, owner, product, productID, productPackage, quantity, doseStrength, doseType, doseQuantity, instruction, comment, status);
     }
 
+    /**
+     * POST request
+     * Creates a new prescription on the ledger
+     * @param String request(JsonObject)
+     * @return MediaType.APPLICATION_JSON (JsonObject.toString())
+     */
     @POST
     @Path("/createPrescription")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -109,6 +149,12 @@ public class PrescriptionService {
         return PrescriptionRequests.createPrescription(userInfo, date, issuer, product, productID, productPackage, quantity, doseStrength, doseType, doseQuantity, instruction, comment);
     }
 
+    /**
+     * POST request
+     * Gets full prescription history of a prescription on the ledger
+     * @param String request(JsonObject)
+     * @return MediaType.APPLICATION_JSON (JsonObject.toString())
+     */
     @POST
     @Path("/getPrescriptionHistory")
     @Consumes(MediaType.APPLICATION_JSON)
