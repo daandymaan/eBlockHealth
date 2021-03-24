@@ -22,7 +22,7 @@ import org.hyperledger.fabric.shim.ledger.QueryResultsIterator;
         name = "infocontract",
         info = @Info(
                 title = "User contract",
-                description = "Allows the creation and transfer of prescriptions",
+                description = "Allows the modification and addtion of user data",
                 version = "0.0.1-SNAPSHOT",
                 license = @License(
                         name = "Apache 2.0 License",

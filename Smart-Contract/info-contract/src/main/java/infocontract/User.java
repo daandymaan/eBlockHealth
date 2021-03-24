@@ -27,6 +27,7 @@ public class User {
     @Property()
     private String cert;
 
+    //Getters and Setters
     public String getIdentifier() {
         return identifier;
     }
