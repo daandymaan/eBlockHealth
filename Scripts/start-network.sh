@@ -14,14 +14,13 @@ set -ev
 #Current directory
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-#Path are already exported in script in profile.d folder
+#Export appropriate enviromental variables 
 export PATH=/home/dan/Docs/fabric-samples/bin:$PATH
 export FABRIC_CFG_PATH=/home/dan/Docs/fabric-samples/config/
 export PATH=$PATH:$FABRIC_CFG_PATH 
 export COMPOSE_PROJECT_NAME=net
 export IMAGE_TAG=latest
 export SYS_CHANNEL=system-channel
-
 
 #Stop network
 ./stop-network.sh
@@ -32,6 +31,7 @@ cd /home/dan/Docs/fabric-samples/test-network
 #Creates a network with ca and each have a couchdb
 ./network.sh up createChannel -ca -s couchdb 
 
+#Copy peer configurations to external folder
 cp "/home/dan/Docs/fabric-samples/test-network/organizations/peerOrganizations/org1.example.com/connection-org1.yaml" "/home/dan/Docs/BlockchainPrescribing/Orgs/Org1/gateway/"
 cp "/home/dan/Docs/fabric-samples/test-network/organizations/peerOrganizations/org2.example.com/connection-org2.yaml" "/home/dan/Docs/BlockchainPrescribing/Orgs/Org2/gateway/"
 
