@@ -1,4 +1,5 @@
-package application.requests;
+package application.util;
+
 
 
 import java.nio.file.Path;
@@ -33,11 +34,8 @@ public class Connection {
         Gateway.Builder builder = Gateway.createBuilder();
         builder.identity(wallet, user.get("identifier").getAsString()).networkConfig(networkConfigPath).discovery(true);
         Gateway gateway = builder.connect();
-        System.out.println("Gateway created");
         Network network = gateway.getNetwork("mychannel");
-        System.out.println("Network created");
         return network;
-
     }
 
     /**
@@ -50,7 +48,6 @@ public class Connection {
     public static Contract getContract(JsonObject user, String contractName) throws Exception {
         Network network = connect(user);
         Contract contract = network.getContract(contractName);
-        System.out.println("Contract found");
         return contract;
     }
 

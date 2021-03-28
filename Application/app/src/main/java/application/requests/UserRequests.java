@@ -10,10 +10,13 @@ import com.google.gson.JsonParser;
 import org.hyperledger.fabric.gateway.Contract;
 
 import application.log.Logging;
+import application.util.Connection;
+
 
 
 public class UserRequests {
     private static final Logger LOGGER = Logging.getInstance();
+    private static final String contractName = "infocontract";
 
     /**
      * Gets all users from the ledger using the infocontract contract
@@ -23,7 +26,7 @@ public class UserRequests {
     public static String getUsers(JsonObject user) {
         byte result[];
         try {
-            Contract contract = Connection.getContract(user, "infocontract");
+            Contract contract = Connection.getContract(user, contractName);
             result = contract.evaluateTransaction("getAllUsers");
             return new String(result);
         } catch (Exception e) {
@@ -79,7 +82,7 @@ public class UserRequests {
     String surname, String address, String dob, String gender, String email, String status, String cert) {
         byte result[];
         try {
-            Contract contract = Connection.getContract(user, "infocontract");
+            Contract contract = Connection.getContract(user, contractName);
             result = contract.submitTransaction("updateUser", identifier, title, firstname, surname, address, dob, gender, email, status, cert);
             LOGGER.info(new String(result));
             return new String(result);
@@ -111,7 +114,7 @@ public class UserRequests {
     String surname, String address, String dob, String gender, String email, String status, String cert) {
         byte result[];
         try {
-            Contract contract = Connection.getContract(user, "infocontract");
+            Contract contract = Connection.getContract(user, contractName);
             result = contract.submitTransaction("createUser", identifier, title, firstname, surname, address, dob, gender, email, status, cert);
             LOGGER.info(new String(result));
             return new String(result);

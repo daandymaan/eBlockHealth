@@ -1,4 +1,4 @@
-package application.requests;
+package application.util;
 
 import java.util.logging.Logger;
 
@@ -7,6 +7,7 @@ import org.hyperledger.fabric.gateway.Wallet;
 import org.hyperledger.fabric.gateway.X509Identity;
 
 import application.log.Logging;
+import application.requests.UserRequests;
 
 import com.google.common.base.CharMatcher;
 import com.google.gson.JsonObject;

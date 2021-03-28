@@ -1,4 +1,4 @@
-package application.requests;
+package application.util;
 
 import java.io.IOException;
 import java.security.PrivateKey;
@@ -22,6 +22,7 @@ import org.hyperledger.fabric_ca.sdk.HFCAClient;
 import org.hyperledger.fabric_ca.sdk.RegistrationRequest;
 
 import application.log.Logging;
+import application.requests.UserRequests;
 
 public class RegisterUser {
 

@@ -12,7 +12,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import application.log.Logging;
-import application.requests.Authentication;
+import application.util.Authentication;
 import application.requests.UserRequests;
 
 /**

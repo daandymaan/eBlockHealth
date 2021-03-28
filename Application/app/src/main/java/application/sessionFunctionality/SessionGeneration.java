@@ -14,7 +14,7 @@ import javax.servlet.http.HttpSession;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import application.requests.Authentication;
+import application.util.Authentication;
 import application.log.Logging;
 
 @WebServlet("/userRequestsGateway/authenticateUser")

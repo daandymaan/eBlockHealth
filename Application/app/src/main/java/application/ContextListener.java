@@ -15,7 +15,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import application.log.Logging;
-import application.requests.RegisterUser;
+import application.util.RegisterUser;
 /**
  * This class acts as the application path and the weblistener
  * This class is the first class ran by the application when deployed to the tomcat server

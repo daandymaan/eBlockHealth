@@ -10,11 +10,13 @@ import com.google.gson.JsonParser;
 import org.hyperledger.fabric.gateway.Contract;
 
 import application.log.Logging;
+import application.util.Connection;
 
 
 public class PrescriptionRequests {
 
     private static final Logger LOGGER = Logging.getInstance();
+    private static final String contractName = "pc";
 
     /**
      * Adds a prescription to the ledger using the pc contract, the contract then returns a string with the prescription that was added to the ledger
@@ -35,7 +37,7 @@ public class PrescriptionRequests {
     public static String createPrescription(JsonObject user, String date, String issuer, String product, String productID, String productPackage,
     String quantity, String doseStrength, String doseType, String doseQuantity, String instruction, String comment) {
         try {
-            Contract contract = Connection.getContract(user, "pc");
+            Contract contract = Connection.getContract(user, contractName);
             byte[] result = contract.submitTransaction("issue", date, issuer, product, productID, productPackage, quantity, doseStrength, doseType, doseQuantity, instruction, comment );
             return new String(result);
         } catch (Exception e) {
@@ -54,7 +56,7 @@ public class PrescriptionRequests {
     public static String getAllPrescriptions(JsonObject user) {
         byte[] result;
         try {
-            Contract contract = Connection.getContract(user, "pc");
+            Contract contract = Connection.getContract(user, contractName);
             result = contract.evaluateTransaction("getAllPrescriptions");
             return new String(result);
         } catch (Exception e) {
@@ -99,7 +101,7 @@ public class PrescriptionRequests {
     public static String transferPrescription(JsonObject user, String PID, String owner, String newOwner) {
         byte[] result;
         try {
-            Contract contract = Connection.getContract(user, "pc");
+            Contract contract = Connection.getContract(user, contractName);
             result = contract.submitTransaction("transferPrescription", PID, owner, newOwner);
             return new String(result);
 
@@ -134,7 +136,7 @@ public class PrescriptionRequests {
     String productID, String productPackage, String quantity,String doseStrength, String doseType, String doseQuantity, 
     String instruction, String comment, String status) {
         try {
-            Contract contract = Connection.getContract(user, "pc");
+            Contract contract = Connection.getContract(user, contractName);
             byte[] result = contract.submitTransaction("updatePrescription", PID, date, issuer, owner, product, productID, productPackage, quantity, doseStrength, doseType, doseQuantity, instruction, comment, status);
             return new String(result);
         } catch (Exception e) {
@@ -157,7 +159,7 @@ public class PrescriptionRequests {
         byte[] result;
         Contract contract;
         try {
-            contract = Connection.getContract(user, "pc");
+            contract = Connection.getContract(user, contractName);
             result = contract.submitTransaction("changeStatus", PID, status);
             return new String(result);
         } catch (Exception e) {
@@ -179,7 +181,7 @@ public class PrescriptionRequests {
         byte[] result;
         Contract contract;
         try {
-            contract = Connection.getContract(user, "pc");
+            contract = Connection.getContract(user, contractName);
             result = contract.evaluateTransaction("getHistoryForKey", PID);
             return new String(result);
         } catch (Exception e) {
