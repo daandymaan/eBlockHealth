@@ -28,11 +28,12 @@ Server.verifySession(function(value){
         logout.className = "dropdown-item";
         logout.id = "logoutbtn";
         logout.innerHTML = "Logout";
+        logout.href = "http://localhost:8080/app/login/login.html";
 
         logout.onclick = function(){
             Server.endSession(function(value){
                 if(value.msg == "success"){
-                    logout.href="http://localhost:8080/app/login/login.html";
+                    console.log("Logged out");
                 }
             });
         }

@@ -109,6 +109,7 @@ export function createPrescription(request, callback){
     var self = this;
     this.verifySession(function(value){
         value.msg = "";
+        request.issuer = value.cert;
         request.user = value;
         self.postRequest(url, request, function(response){
             if(callback) callback(response);

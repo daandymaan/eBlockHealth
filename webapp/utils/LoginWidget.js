@@ -15,9 +15,9 @@ submitButton.onclick = function(){
             if(value.msg == "success"){
                 var inputNo = [];
                 while(inputNo.length != 3){
-                    var no = ("" + Math.random()).substring(2,3)% 8;
-                    if(!inputNo.includes(no)){
-                        inputNo.push(no);
+                    var num = ("" + Math.random()).substring(2,3)% 8;
+                    if(!inputNo.includes(num)){
+                        inputNo.push(num);
                     }
                 }
 
