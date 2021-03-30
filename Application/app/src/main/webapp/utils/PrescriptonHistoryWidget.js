@@ -34,8 +34,8 @@ function widgetCreation(data){
         }
         loadTableData(data[0]);
         location.href="#prescription_history_table";
-
     };
+
     viewHistory.type = "button";
     pIDH1.textContent = data[0].pID;
     DATEH2.textContent = data[0].date;
@@ -113,7 +113,7 @@ function loadOwnerTimeline(owner, prevOwner){
     ownerSpan.innerHTML = "Owner:\t" + owner.substring(50, 60);
     ownerSpan.title = owner;
     if(prevOwner){
-        prevOwnerSpan.innerHTML =   "Previous owner:\t" + prevOwner.substring(50, 60);;
+        prevOwnerSpan.innerHTML =   "Previous owner:\t" + prevOwner.substring(50, 60);
         prevOwnerSpan.title = prevOwner;
     }
 

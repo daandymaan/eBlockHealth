@@ -13,27 +13,10 @@ submitButton.onclick = function(){
         var loginDetails = {"identifier" : identifier.value, "DOB" : DOB.value};
         Server.isUser(loginDetails, function(value){
             if(value.msg == "success"){
-                var inputNo = [];
-                while(inputNo.length != 3){
-                    var num = ("" + Math.random()).substring(2,3)% 8;
-                    if(!inputNo.includes(num)){
-                        inputNo.push(num);
-                    }
-                }
-
-                inputNo.sort();
-                var inputs = document.getElementsByClassName("digitinput");
-                for(var i = 0; i < inputs.length; i++){
-                    inputs[i].disabled = true;
-                    inputs[i].value = "*";
-                }
-                for(var i = 0; i < inputNo.length; i++){
-                    inputs[inputNo[i]].disabled = false;
-                    inputs[inputNo[i]].value = "";
-                }
-
+                var inputValues = generatePassphrasePattern();
+                var inputs = inputValues[0];
+                var inputNo = inputValues[1];
                 $('#modalView').modal('show');
-
                 var verifyButton = document.getElementById("verifyButton");
                 verifyButton.onclick = function(){
                     var passcode = "";
@@ -42,6 +25,7 @@ submitButton.onclick = function(){
                         passcode+= inputs[inputNo[i]].value;
                         pattern += inputNo[i];
                     }
+
                     var loginCredentials = {"identifier" : loginDetails.identifier, "pattern" : pattern, "passcode" : passcode};
                     Server.userAuthentication(loginCredentials, function(value){
                         console.log(value);
@@ -60,4 +44,34 @@ submitButton.onclick = function(){
         })
     }
 }
+
+function generatePassphrasePattern(){
+    var inputNo = [];
+    while(inputNo.length != 3){
+        var num = ("" + Math.random()).substring(2,3)% 8;
+        if(!inputNo.includes(num)){
+            inputNo.push(num);
+        }
+    }
+
+    inputNo.sort();
+    var inputs = document.getElementsByClassName("digitinput");
+    for(var i = 0; i < inputs.length; i++){
+        inputs[i].disabled = true;
+        inputs[i].value = "*";
+    }
+    for(var i = 0; i < inputNo.length; i++){
+        inputs[inputNo[i]].disabled = false;
+        inputs[inputNo[i]].value = "";
+        if(i+1 < inputNo.length){
+            var next = i + 1;
+            inputs[inputNo[i]].addEventListener("change", function(){console.log("inhere");inputs[inputNo[next]].focus();})
+        }
+    }
+
+
+
+    return [inputs, inputNo];
+}
+
 
