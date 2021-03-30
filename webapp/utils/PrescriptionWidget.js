@@ -16,7 +16,13 @@ Server.getPrescriptionsForUser( function(value){
         data.forEach(function(widgetData){
             widgets.push(widgetCreation(widgetData));
         });
-    }
+    }else {
+        var jumbotron = document.getElementById("v_prescription_header");
+        var errormsg = document.createElement("h2");
+        errormsg.className = "display-3";
+        errormsg.textContent = data.msg;
+        jumbotron.appendChild(errormsg);
+    } 
 })
 
 
@@ -114,13 +120,14 @@ function transferPrescription(data){
                 if(value.owner == transferData.recipient){
                     toastHeader.innerHTML = "Prescription sent successfully";
                     toastBody.innerHTML = value.pID +" sent succesfully";
+                    setTimeout(function(){
+                        window.location.reload(1);
+                    }, 2000);
                 } else {
-                    toastHeader.innerHTML = "Prescription was not sent";
+                    toastHeader.innerHTML = "Prescription was not sent"
+                    toastBody.innerHTML = value.msg;
                 }
                 $('#toast_notifcation').toast('show');
-                setTimeout(function(){
-                    window.location.reload(1);
-                }, 2000);
             });
         }
     }

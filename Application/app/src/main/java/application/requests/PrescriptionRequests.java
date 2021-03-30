@@ -43,7 +43,7 @@ public class PrescriptionRequests {
         } catch (Exception e) {
             LOGGER.severe(e.toString());
             JsonObject errorResponse = new JsonObject();
-            errorResponse.addProperty("msg", "Prescriptions could not be created");
+            errorResponse.addProperty("msg", "Prescription could not be created");
             return errorResponse.toString();
         }
     }
@@ -84,7 +84,7 @@ public class PrescriptionRequests {
         
         if(userPrescriptions.size() == 0){
             JsonObject errorMsg = new JsonObject();
-            errorMsg.addProperty("msg", "No prescriptions found for user");
+            errorMsg.addProperty("msg", "No prescriptions currently owned");
             return errorMsg.toString();
         }
         return userPrescriptions.toString();
@@ -118,7 +118,7 @@ public class PrescriptionRequests {
                 result = contract.submitTransaction("transferPrescription", PID, owner, newOwner);
                 return new String(result);
             } else {
-                errorResponse.addProperty("msg", "User does not exist");
+                errorResponse.addProperty("msg", "Recipient address incorrect: User does not exist");
                 return errorResponse.toString();
             }
         } catch (Exception e) {
@@ -213,7 +213,7 @@ public class PrescriptionRequests {
      * @return String
      */
     public static String getPrescriptionHistoryForUser(JsonObject user){
-        JsonObject prescriptionsObject = JsonParser.parseString(getAllPrescriptionsForUser(user)).getAsJsonObject();
+        JsonElement prescriptionsObject = JsonParser.parseString(getAllPrescriptionsForUser(user));
         if(prescriptionsObject.isJsonArray()){
             JsonArray prescriptions = prescriptionsObject.getAsJsonArray();
             JsonArray prescriptionsHistory = new JsonArray();

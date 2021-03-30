@@ -51,7 +51,7 @@ function formatPrescriptionData(prescription){
             toastBody.innerHTML = value.pID +" created succesfully";
         } else {
             toastHeader.innerHTML = "Prescription was not created";
-            toastBody.innerHTML = "The prescription was not created"
+            toastBody.innerHTML = "The prescription was not created due to unknown error";
         }
         $('#toast_notifcation').toast('show');
     })
