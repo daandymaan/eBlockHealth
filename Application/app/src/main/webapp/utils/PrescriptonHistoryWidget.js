@@ -23,8 +23,9 @@ function widgetCreation(data){
     DATEH2.className += "card-text";
 
     var viewHistory = document.createElement("button");
-    viewHistory.className += "btn btn-outline-success"
+    viewHistory.className += "btn btn-outline-success";
     viewHistory.onclick = function(){
+        highlightWidget(widgetDiv);
         generatePagination(data);
         if(data.length > 1){
             loadOwnerTimeline(data[0].owner, data[1].owner);
@@ -32,6 +33,7 @@ function widgetCreation(data){
             loadOwnerTimeline(data[0].owner);
         }
         loadTableData(data[0]);
+        location.href="#prescription_history_table";
 
     };
     viewHistory.type = "button";
@@ -78,26 +80,29 @@ function loadTableData(tableData){
 
      //Add the header row.
      var row = table.insertRow(-1);
+     var PIDHEAD = document.createElement("TH");
+     PIDHEAD.innerHTML = "PID";
+     row.appendChild(PIDHEAD);
      for (var i = 0; i < columnCount; i++) {
-        if(Object.keys(tableData)[i] != "owner" && Object.keys(tableData)[i] != "issuer"){
+        if(Object.keys(tableData)[i] != "owner" && Object.keys(tableData)[i] != "issuer" && Object.keys(tableData)[i]!= "pID"){
             var headerCell = document.createElement("TH");
-            headerCell.innerHTML = Object.keys(tableData)[i];
+            headerCell.innerHTML = Object.keys(tableData)[i].replace(/([a-z0-9])([A-Z])/g, '$1 $2');
             row.appendChild(headerCell);
         }
-
     }
-
         row = table.insertRow(-1);
+        var PIDCELL = row.insertCell(-1);
+        PIDCELL.innerHTML = tableData["pID"];
         for(var j = 0; j < columnCount; j++){
-            if(Object.keys(tableData)[j] != "owner" && Object.keys(tableData)[j] != "issuer"){
+            if(Object.keys(tableData)[j] != "owner" && Object.keys(tableData)[j] != "issuer" && Object.keys(tableData)[j]!= "pID"){
                 var cell = row.insertCell(-1);
                 cell.innerHTML = tableData[Object.keys(tableData)[j]];
             }
         }
 
-     var dvTable = document.getElementById("prescription_history_table");
-     dvTable.innerHTML = "";
-     dvTable.appendChild(table);
+    var dvTable = document.getElementById("prescription_history_table");
+    dvTable.innerHTML = "";
+    dvTable.appendChild(table);
 }
 
 function loadOwnerTimeline(owner, prevOwner){
@@ -114,4 +119,12 @@ function loadOwnerTimeline(owner, prevOwner){
 
     $('[data-toggle="owner_tooltip"]').tooltip();   
     $('[data-toggle="previousOwner_tooltip"]').tooltip(); 
+}
+
+function highlightWidget(selectedWidget){
+    var widgets = document.getElementsByClassName("card");
+    for(var i = 0; i < widgets.length; i++){
+        widgets[i].style.backgroundColor = "#ffffff";
+    }
+    selectedWidget.style.backgroundColor = "#c4dffc";
 }

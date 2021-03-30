@@ -1,3 +1,7 @@
+html{
+  scroll-behavior: smooth;
+}
+
 body{
   font-family: 'Montserrat', sans-serif;
 }
@@ -111,4 +115,7 @@ textarea {
   width: 45%;
   text-align: right;
   float: right;
+}
+table{
+  white-space:nowrap
 }
