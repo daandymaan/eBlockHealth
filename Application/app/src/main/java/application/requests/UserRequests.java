@@ -60,8 +60,30 @@ public class UserRequests {
             errorResponse.addProperty("msg", "User could not be found");
             return errorResponse.toString();
         }
-
     }
+
+    /**
+     * Checks if a user exists using the certificate
+     * @param JsonObject user
+     * @param String cert
+     * @return boolean
+     */
+    public static boolean userExistsByCert(JsonObject user, String cert){
+        JsonObject userSelected = new JsonObject();
+        JsonArray JSONResults = JsonParser.parseString(UserRequests.getUsers(user)).getAsJsonArray();
+        LOGGER.info(JSONResults.toString());
+        for (JsonElement jsonElement : JSONResults) {
+            if(jsonElement.getAsJsonObject().get("cert").getAsString().equals(cert)){
+                userSelected = jsonElement.getAsJsonObject();
+            }
+        }
+
+        if(!userSelected.entrySet().isEmpty()){
+            return true;
+        } else {
+            return false;
+        }
+    }  
 
     /**
      * Updates a user's details on the ledger using the contract infocontract

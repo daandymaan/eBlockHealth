@@ -100,14 +100,29 @@ public class PrescriptionRequests {
      */
     public static String transferPrescription(JsonObject user, String PID, String owner, String newOwner) {
         byte[] result;
+        JsonObject errorResponse = new JsonObject();
         try {
-            Contract contract = Connection.getContract(user, contractName);
-            result = contract.submitTransaction("transferPrescription", PID, owner, newOwner);
-            return new String(result);
+            if(getPrescriptionByPID(user, PID) == null){
+                errorResponse.addProperty("msg", "Prescription does not exist");
+                return errorResponse.toString();
+            }
 
+            JsonObject prescriptionChosen = JsonParser.parseString(getPrescriptionByPID(user, PID)).getAsJsonObject();
+            if(!prescriptionChosen.get("owner").getAsString().equals(owner)){
+                errorResponse.addProperty("msg", "This prescription is owner by another user");
+                return errorResponse.toString();
+            }
+
+            if(UserRequests.userExistsByCert(user, newOwner)){
+                Contract contract = Connection.getContract(user, contractName);
+                result = contract.submitTransaction("transferPrescription", PID, owner, newOwner);
+                return new String(result);
+            } else {
+                errorResponse.addProperty("msg", "User does not exist");
+                return errorResponse.toString();
+            }
         } catch (Exception e) {
             e.printStackTrace();
-            JsonObject errorResponse = new JsonObject();
             errorResponse.addProperty("msg", "Prescriptions could not be transfered");
             return errorResponse.toString();
         }
@@ -198,17 +213,29 @@ public class PrescriptionRequests {
      * @return String
      */
     public static String getPrescriptionHistoryForUser(JsonObject user){
-        JsonArray prescriptions = JsonParser.parseString(getAllPrescriptionsForUser(user)).getAsJsonArray();
-        JsonArray prescriptionsHistory = new JsonArray();
-        for (JsonElement p : prescriptions) {
-            prescriptionsHistory.add(JsonParser.parseString(getHistoryForKey(user, p.getAsJsonObject().get("pID").getAsString())).getAsJsonArray());
-        }
-        if(prescriptionsHistory.size() == 0){
+        JsonObject prescriptionsObject = JsonParser.parseString(getAllPrescriptionsForUser(user)).getAsJsonObject();
+        if(prescriptionsObject.isJsonArray()){
+            JsonArray prescriptions = prescriptionsObject.getAsJsonArray();
+            JsonArray prescriptionsHistory = new JsonArray();
+            for (JsonElement p : prescriptions) {
+                prescriptionsHistory.add(JsonParser.parseString(getHistoryForKey(user, p.getAsJsonObject().get("pID").getAsString())).getAsJsonArray());
+            }
+            LOGGER.info(prescriptionsHistory.toString());
+            return prescriptionsHistory.toString();
+        } else {
             JsonObject errorMsg = new JsonObject();
-            errorMsg.addProperty("msg", "No prescriptions found for user");
+            errorMsg.addProperty("msg", "No prescriptions currently owned");
             return errorMsg.toString();
         }
-        LOGGER.info(prescriptionsHistory.toString());
-        return prescriptionsHistory.toString();
+    }
+
+    public static String getPrescriptionByPID(JsonObject user, String PID){
+        JsonArray JSONresult = JsonParser.parseString(PrescriptionRequests.getAllPrescriptions(user)).getAsJsonArray();
+        for (JsonElement jsonElement : JSONresult) {
+            if(PID.equals(jsonElement.getAsJsonObject().get("pID").getAsString())){
+                return jsonElement.getAsJsonObject().toString();
+            }
+        }
+        return null;
     }
 }

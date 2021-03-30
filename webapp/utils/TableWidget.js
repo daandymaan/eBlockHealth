@@ -1,8 +1,16 @@
 import Server from './Server.js'
 Server.getTransactionsFromUser( function(data){
-    data.forEach(function(prescription){
-        widgetCreation(prescription);
-    });
+    if(data.msg){
+        var jumbotron = document.getElementById("v_history_header");
+        var errormsg = document.createElement("h2");
+        errormsg.className = "display-3";
+        errormsg.textContent = data.msg;
+        jumbotron.appendChild(errormsg);
+    } else{
+        data.forEach(function(prescription){
+            widgetCreation(prescription);
+        });
+    }
 });
 
 function widgetCreation(data){

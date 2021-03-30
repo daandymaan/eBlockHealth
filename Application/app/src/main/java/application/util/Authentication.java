@@ -36,7 +36,7 @@ public class Authentication {
      */
     public boolean userExists(JsonObject user) throws Exception {
         Wallet wallet = Connection.getWallet();
-        if(wallet.get(user.get("identifier").getAsString()) != null){
+        if(wallet.get(user.get("identifier").getAsString()) != null && !user.get("identifier").getAsString().equals("admin")){
             LOGGER.info(user.get("identifier").getAsString() + " found!");
             return true;
         } else {
