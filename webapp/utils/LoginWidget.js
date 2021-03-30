@@ -32,14 +32,14 @@ submitButton.onclick = function(){
                     inputs[inputNo[i]].value = "";
                 }
 
-                $('#modalView').modal('show')
+                $('#modalView').modal('show');
 
                 var verifyButton = document.getElementById("verifyButton");
                 verifyButton.onclick = function(){
                     var passcode = "";
                     var pattern = "";
                     for(var i = 0; i < inputNo.length; i++){
-                        passcode+= inputs[inputNo[i]].value
+                        passcode+= inputs[inputNo[i]].value;
                         pattern += inputNo[i];
                     }
                     var loginCredentials = {"identifier" : loginDetails.identifier, "pattern" : pattern, "passcode" : passcode};
@@ -49,7 +49,7 @@ submitButton.onclick = function(){
                             window.location.href = "http://localhost:8080/app/index.html";
                         } else {
                             var errormsg = document.getElementById("msg");
-                            errormsg.style = "color: red"
+                            errormsg.style = "color: red";
                             errormsg.innerHTML = "Invalid credentials";
                         }
                     })
