@@ -80,6 +80,7 @@ public final class PrescriptionContract implements ContractInterface {
             JSON = genson.serialize(prescription);
             stub.putStringState(PID, JSON);
         }
+        
         return JSON;
     }
     /**
@@ -134,6 +135,7 @@ public final class PrescriptionContract implements ContractInterface {
     * This method changes ownership of the prescription
     * @param ctx The given context 
     * @param PID The PID of the prescription
+    * @param owner Original owner of the prescription
     * @param newOwner The new owner of the prescription
     * @return A string containing the updated prescription
     */
@@ -180,6 +182,9 @@ public final class PrescriptionContract implements ContractInterface {
      */
     @Transaction(intent = Transaction.TYPE.EVALUATE)
     public String getHistoryForKey(final Context ctx, String PID){
+        if(!prescriptionExists(ctx, PID)){
+            return null;
+        }
         ChaincodeStub stub = ctx.getStub();
         ArrayList<String> results  = new ArrayList<String>();
         QueryResultsIterator<KeyModification> history =  stub.getHistoryForKey(PID);

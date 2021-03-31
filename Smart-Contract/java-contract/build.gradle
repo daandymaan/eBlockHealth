@@ -26,6 +26,7 @@ repositories {
 dependencies {
     // Use JUnit Jupiter API for testing.
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.2'
+    testImplementation 'org.assertj:assertj-core:3.11.1'
 
     // Use JUnit Jupiter Engine for testing.
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
@@ -73,12 +74,12 @@ application {
 //     finalizedBy jacocoTestReport
 // }
 
-// test {
-//     useJUnitPlatform()
-//     testLogging {
-//         events "passed", "skipped", "failed"
-//     }
-// }
+test {
+    useJUnitPlatform()
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+}
 
 // check.dependsOn jacocoTestCoverageVerification
 // installDist.dependsOn check
