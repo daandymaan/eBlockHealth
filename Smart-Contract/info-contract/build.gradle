@@ -42,7 +42,9 @@ application {
     mainClass = 'org.hyperledger.fabric.contract.ContractRouter'
 }
 
-// tasks.named('test') {
-//     // Use junit platform for unit tests.
-//     useJUnitPlatform()
-// }
+test {
+    useJUnitPlatform()
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+}
