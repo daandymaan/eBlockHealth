@@ -1,11 +1,15 @@
 import Server from "./Server.js";
+var loginURL = "/app/login/login.html";
+var detailsURL= "/app/v_details/v_details.html";
+var indexURL = "/app/index.html";
+var createURL = "/app/c_prescriptions/c_prescriptions.html";
 
 Server.verifySession(function(value){
     if(value.msg == "success"){
         var user = value.identifier;
         var sideNavButton = document.getElementById("navSideButton");
         sideNavButton.innerHTML = user;
-        sideNavButton.href="http://localhost:8080/app/v_details/v_details.html";
+        sideNavButton.href = detailsURL;
         sideNavButton.setAttribute("data-toggle", "dropdown");
 
         var navClass = document.getElementById("navClass");
@@ -21,14 +25,14 @@ Server.verifySession(function(value){
 
         var myAccount = document.createElement("a");
         myAccount.className = "dropdown-item";
-        myAccount.href = "http://localhost:8080/app/v_details/v_details.html";
+        myAccount.href = detailsURL;
         myAccount.innerHTML = "My details";
 
         var logout = document.createElement("a");
         logout.className = "dropdown-item";
         logout.id = "logoutbtn";
         logout.innerHTML = "Logout";
-        logout.href = "http://localhost:8080/app/login/login.html";
+        logout.href = loginURL;
 
         logout.onclick = function(){
             Server.endSession(function(value){
@@ -41,11 +45,11 @@ Server.verifySession(function(value){
         dropdownMenu.appendChild(myAccount);
         dropdownMenu.appendChild(logout);
     } else {
-        window.location.replace("http://localhost:8080/app/login/login.html");
+        window.location.replace(loginURL);
     }
 
-    if(window.location.href == "http://localhost:8080/app/c_prescriptions/c_prescriptions.html" && value.status != "M"){
-        window.location.replace("http://localhost:8080/app/index.html");
+    if(window.location.href == createURL && value.status != "M"){
+        window.location.replace(indexURL);
     }
 })
 

@@ -1,5 +1,5 @@
 import Server, { userAuthentication } from './Server.js'
-
+var indexURL = "/app/index.html";
 var submitButton = document.getElementById("btnSubmit");
 submitButton.onclick = function(){
     var identifier = document.getElementById("identifier");
@@ -30,7 +30,7 @@ submitButton.onclick = function(){
                     Server.userAuthentication(loginCredentials, function(value){
                         console.log(value);
                         if(value.msg == "success"){
-                            window.location.href = "http://localhost:8080/app/index.html";
+                            window.location.href = indexURL;
                         } else {
                             var errormsg = document.getElementById("msg");
                             errormsg.style = "color: red";
@@ -63,14 +63,8 @@ function generatePassphrasePattern(){
     for(var i = 0; i < inputNo.length; i++){
         inputs[inputNo[i]].disabled = false;
         inputs[inputNo[i]].value = "";
-        if(i+1 < inputNo.length){
-            var next = i + 1;
-            inputs[inputNo[i]].addEventListener("change", function(){console.log("inhere");inputs[inputNo[next]].focus();})
-        }
     }
-
-
-
+    
     return [inputs, inputNo];
 }
 

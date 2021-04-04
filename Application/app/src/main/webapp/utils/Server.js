@@ -1,5 +1,5 @@
 
-var URL = "http://localhost:8080/app/api/";
+var URL = "/app/api/";
 
 function getRequest(url, callback){
     console.log("URL:", url);
