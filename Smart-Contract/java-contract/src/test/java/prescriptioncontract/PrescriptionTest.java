@@ -160,7 +160,6 @@ public class PrescriptionTest {
 
         String prescriptionToString = new String(Prescription.serialize(prescription));
         JSONObject stringToJson = new JSONObject(prescriptionToString);
-        System.out.println(stringToJson.toString());
         assertEquals(prescription.getPID(), stringToJson.getString("PID"));
         assertEquals(prescription.getDate(), stringToJson.getString("date"));
         assertEquals(prescription.getIssuer(), stringToJson.getString("issuer"));

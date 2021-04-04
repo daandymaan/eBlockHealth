@@ -66,7 +66,6 @@ public class UserTest {
 
         String userString = new String (User.serialize(user));
         JSONObject stringToJson = new JSONObject(userString);
-        System.out.println(stringToJson.toString());
         assertEquals(user.getIdentifier(), stringToJson.get("identifier"));
         assertEquals(user.getTitle(), stringToJson.get("title"));
         assertEquals(user.getFirstname(), stringToJson.get("firstname"));
