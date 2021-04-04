@@ -49,7 +49,7 @@ function widgetCreation(data){
 }
 
 function generatePagination(data){
-    var paginationBar = '<h2 class="display-4">'+ data[0].pID +' prescription history</h1> <nav aria-label="prescription history pagination tabs"><ul class="pagination">';
+    var paginationBar = '<nav aria-label="prescription history pagination tabs"><ul class="pagination">';
     for(var i = 0; i < data.length; i++){
         var pagTab = '<li class="page-item"><a class="page-link">'+ i +'</a></li>';
         paginationBar += pagTab;
@@ -66,6 +66,10 @@ function generatePagination(data){
         } else{
             loadOwnerTimeline(data[index].owner);
         }
+    });
+    $('.page-item').click(function(){
+        $('.page-item').removeClass('active');
+        $(this).addClass('active');
     })
 }
 
