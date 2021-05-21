@@ -23,6 +23,8 @@ I have been interested in blockchain technology for a while and have often thoug
 This project is always ongoing and I have plenty of ideas I would like to implement into this project so keep an eye out.
 ___
 ## About the Project 
+[Dissertation Document](https://github.com/daandymaan/BlockchainPrescribing/blob/c321526981b09cc148e35e32dc4fc56b0f6ea399/Docs/Simons,%20Daniel%20C17371946%20DT228%20Final.pdf)
+
 This project is a web-based application which is secured through the power of blockchain technology. This website allows the GP’s, Pharmacies and Patients to view and exchange their prescriptions between other user’s on the network, this exchange is carried out in a secure and reliable method using the infrastructure of blockchain. GP’s can also create prescriptions using this web application.
 
 User’s can easily use and interact with the website, with the website providing the tools to create, view and exchange prescriptions between other user’s on the network. As this website is based on blockchain infrastructure each transaction of prescriptions that occurs on the network is  tracked and recorded. This application provides a permanent immutable history of prescription activity that occurs on the network and as nothing can be deleted off the network provides a sense of reliability on the data stored there. 
@@ -35,6 +37,24 @@ This system provides a self service website for patients, GPs and Pharmacies to 
 
 ___
 ## Prerequisites
+
+___
+## Setting up the environment
+
+___
+## Scripts
+
+___
+## Java War application
+
+___
+## front-end application
+
+___
+## Future improvements 
+
+___
+## Current issues 
 
 ___
 
