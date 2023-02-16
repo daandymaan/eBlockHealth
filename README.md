@@ -35,29 +35,3 @@ Previous ePrescribing systems used a centralised database to store user’s info
 
 This system provides a self service website for patients, GPs and Pharmacies to access prescriptions in an easy to use manner while still maintaining the security of blockchain infrastructure so that the data has integrity and is kept secure. 
 
-___
-## Prerequisites
-
-___
-## Setting up the environment
-
-___
-## Scripts
-
-___
-## Chaincode
-
-___
-## Java War application
-
-___
-## front-end application
-
-___
-## Future improvements 
-
-___
-## Current issues 
-
-___
-
